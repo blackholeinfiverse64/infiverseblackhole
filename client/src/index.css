@@ -757,3 +757,152 @@ html, body {
 .space-scrollbar {
   contain: layout;
 }
+
+/* Glow Border Effect */
+.glow-border {
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.3), 0 0 40px rgba(168, 85, 247, 0.1), inset 0 0 0 1px rgba(168, 85, 247, 0.2);
+}
+
+/* Force Dark Theme for Popover/Modal Components */
+[data-radix-popper-content-wrapper] {
+  background: rgba(10, 10, 15, 0.95) !important;
+  color: white !important;
+}
+
+[data-radix-popper-content-wrapper] * {
+  color: white !important;
+}
+
+/* Force all popover content to be dark */
+[role="dialog"] {
+  background-color: rgba(10, 10, 15, 0.95) !important;
+  color: white !important;
+}
+
+/* Override any white backgrounds in popovers */
+.bg-white {
+  background-color: rgba(10, 10, 15, 0.95) !important;
+}
+
+/* Force dark backgrounds on any popover elements */
+div[data-state="open"] {
+  background-color: rgba(10, 10, 15, 0.95) !important;
+}
+
+.bg-background\/95 {
+  background-color: rgba(10, 10, 15, 0.95) !important;
+}
+
+/* Cosmic Alert Window Styling */
+.cosmic-alert-window {
+  background: #0a0a0f !important;
+  border: 2px solid rgba(168, 85, 247, 0.4) !important;
+  color: white !important;
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.3), 0 0 60px rgba(168, 85, 247, 0.1), inset 0 0 0 1px rgba(168, 85, 247, 0.2) !important;
+}
+
+.cosmic-alert-window * {
+  color: white !important;
+}
+
+/* Force popover content styling */
+[data-radix-popper-content-wrapper] > div {
+  background: #0a0a0f !important;
+  border: 2px solid rgba(168, 85, 247, 0.4) !important;
+}
+
+/* Cosmic scrollbar styling */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thumb-primary\/30::-webkit-scrollbar-thumb {
+  background-color: rgba(168, 85, 247, 0.3);
+  border-radius: 6px;
+}
+
+.scrollbar-track-transparent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* 135-degree revolving particle animations for space backgrounds */
+@keyframes revolve135-medium {
+  0% { 
+    transform: translate(0, 0); 
+    opacity: 0.6;
+  }
+  25% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  75% {
+    opacity: 0.9;
+  }
+  100% { 
+    transform: translate(100vw, 100vh); 
+    opacity: 0.6;
+  }
+}
+
+@keyframes revolve135-small {
+  0% { 
+    transform: translate(0, 0) rotate(0deg); 
+    opacity: 0.4;
+  }
+  25% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  75% {
+    opacity: 0.7;
+  }
+  100% { 
+    transform: translate(120vw, 120vh) rotate(360deg); 
+    opacity: 0.4;
+  }
+}
+
+@keyframes revolve135-tiny {
+  0% { 
+    transform: translate(0, 0) rotate(0deg) scale(0.5); 
+    opacity: 0.3;
+  }
+  25% {
+    opacity: 0.6;
+    transform: translate(30vw, 30vh) rotate(90deg) scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: translate(60vw, 60vh) rotate(180deg) scale(0.8);
+  }
+  75% {
+    opacity: 0.5;
+    transform: translate(90vw, 90vh) rotate(270deg) scale(1.2);
+  }
+  100% { 
+    transform: translate(140vw, 140vh) rotate(360deg) scale(0.5); 
+    opacity: 0.3;
+  }
+}
+
+/* Cosmic grid pattern for space backgrounds */
+.cosmic-grid {
+  background-image: 
+    linear-gradient(rgba(168, 85, 247, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168, 85, 247, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: grid-shift 20s linear infinite;
+}
+
+@keyframes grid-shift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(50px, 50px); }
+}

@@ -44,11 +44,12 @@ export function SplashScreen({ onComplete }) {
       <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900"></div>
       <div className="absolute inset-0 cosmic-grid opacity-15"></div>
       
-      {/* Deep Space Nebula Effects */}
+      {/* Enhanced Deep Space Nebula Effects with Blue Theme */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-900/5 rounded-full blur-3xl animate-pulse" style={{animationDuration: '12s'}}></div>
-        <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-indigo-800/5 rounded-full blur-3xl animate-pulse" style={{animationDuration: '15s', animationDelay: '3s'}}></div>
-        <div className="absolute top-1/2 right-1/5 w-64 h-64 bg-gray-700/3 rounded-full blur-3xl animate-pulse" style={{animationDuration: '18s', animationDelay: '6s'}}></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/8 rounded-full blur-3xl animate-pulse" style={{animationDuration: '12s'}}></div>
+        <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{animationDuration: '15s', animationDelay: '3s'}}></div>
+        <div className="absolute top-1/2 right-1/5 w-64 h-64 bg-blue-400/6 rounded-full blur-3xl animate-pulse" style={{animationDuration: '18s', animationDelay: '6s'}}></div>
+        <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-indigo-500/7 rounded-full blur-3xl animate-pulse" style={{animationDuration: '14s', animationDelay: '2s'}}></div>
       </div>
 
       {/* Main Content */}
@@ -117,9 +118,9 @@ export function SplashScreen({ onComplete }) {
 
       {/* Large Scale Revolving White Particle System */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Medium White Particles */}
+        {/* Medium Blue Particles */}
         {[...Array(40)].map((_, i) => {
-          const size = 2 + Math.random() * 2 // 2-4px
+          const size = 3 + Math.random() * 3 // 3-6px for better visibility
           const startX = Math.random() * 100
           const startY = Math.random() * 100
           const duration = 15 + Math.random() * 20 // 15-35s
@@ -127,7 +128,7 @@ export function SplashScreen({ onComplete }) {
           return (
             <div
               key={`medium-${i}`}
-              className="absolute bg-white rounded-full"
+              className="absolute bg-blue-400 rounded-full"
               style={{
                 width: `${size}px`,
                 height: `${size}px`,
@@ -136,18 +137,19 @@ export function SplashScreen({ onComplete }) {
                 animation: `revolve135-medium ${duration}s linear infinite`,
                 animationDelay: `${delay}s`,
                 boxShadow: `
-                  0 0 ${size * 2}px rgba(255, 255, 255, 0.8),
-                  0 0 ${size * 4}px rgba(255, 255, 255, 0.4)
+                  0 0 ${size * 3}px rgba(59, 130, 246, 0.9),
+                  0 0 ${size * 6}px rgba(59, 130, 246, 0.6),
+                  0 0 ${size * 9}px rgba(59, 130, 246, 0.3)
                 `,
-                opacity: 0.6 + Math.random() * 0.4
+                opacity: 0.8 + Math.random() * 0.2
               }}
             />
           )
         })}
 
-        {/* Small White Particles */}
+        {/* Small Blue Particles */}
         {[...Array(60)].map((_, i) => {
-          const size = 1 + Math.random() * 1.5 // 1-2.5px
+          const size = 2 + Math.random() * 2 // 2-4px for better visibility
           const startX = Math.random() * 100
           const startY = Math.random() * 100
           const duration = 10 + Math.random() * 15 // 10-25s
@@ -155,7 +157,7 @@ export function SplashScreen({ onComplete }) {
           return (
             <div
               key={`small-${i}`}
-              className="absolute bg-white rounded-full"
+              className="absolute bg-blue-300 rounded-full"
               style={{
                 width: `${size}px`,
                 height: `${size}px`,
@@ -163,16 +165,19 @@ export function SplashScreen({ onComplete }) {
                 top: `${startY}%`,
                 animation: `revolve135-small ${duration}s linear infinite`,
                 animationDelay: `${delay}s`,
-                boxShadow: `0 0 ${size * 3}px rgba(255, 255, 255, 0.6)`,
-                opacity: 0.4 + Math.random() * 0.4
+                boxShadow: `
+                  0 0 ${size * 4}px rgba(96, 165, 250, 0.8),
+                  0 0 ${size * 7}px rgba(96, 165, 250, 0.5)
+                `,
+                opacity: 0.6 + Math.random() * 0.4
               }}
             />
           )
         })}
 
-        {/* Tiny Dust Particles */}
+        {/* Tiny Blue Particles */}
         {[...Array(80)].map((_, i) => {
-          const size = 0.5 + Math.random() * 1 // 0.5-1.5px
+          const size = 1 + Math.random() * 1.5 // 1-2.5px for better visibility
           const startX = Math.random() * 100
           const startY = Math.random() * 100
           const duration = 8 + Math.random() * 12 // 8-20s
@@ -180,7 +185,7 @@ export function SplashScreen({ onComplete }) {
           return (
             <div
               key={`tiny-${i}`}
-              className="absolute bg-white rounded-full"
+              className="absolute bg-blue-200 rounded-full"
               style={{
                 width: `${size}px`,
                 height: `${size}px`,
@@ -188,7 +193,11 @@ export function SplashScreen({ onComplete }) {
                 top: `${startY}%`,
                 animation: `revolve135-tiny ${duration}s linear infinite`,
                 animationDelay: `${delay}s`,
-                opacity: 0.3 + Math.random() * 0.3
+                boxShadow: `
+                  0 0 ${size * 5}px rgba(147, 197, 253, 0.7),
+                  0 0 ${size * 8}px rgba(147, 197, 253, 0.4)
+                `,
+                opacity: 0.5 + Math.random() * 0.3
               }}
             />
           )

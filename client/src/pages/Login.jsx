@@ -65,16 +65,83 @@ export default function Login() {
   
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center px-4 py-8 relative overflow-hidden bg-background">
-      {/* Enhanced Cosmic Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10"></div>
-      <div className="absolute inset-0 cosmic-grid opacity-20"></div>
+    <div className="min-h-screen w-full flex items-center justify-center px-4 py-8 relative overflow-hidden bg-black">
+      {/* Enhanced Space Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900"></div>
+      <div className="absolute inset-0 cosmic-grid opacity-15"></div>
       
-      {/* Floating Cosmic Elements */}
-      <div className="absolute top-20 left-20 w-32 h-32 bg-primary/20 rounded-full blur-xl animate-float-cyber glow-primary"></div>
-      <div className="absolute bottom-20 right-20 w-40 h-40 bg-accent/20 rounded-full blur-xl animate-float-cyber glow-accent" style={{animationDelay: '2s'}}></div>
-      <div className="absolute top-1/2 left-10 w-24 h-24 bg-gold/15 rounded-full blur-xl animate-float-cyber glow-gold" style={{animationDelay: '4s'}}></div>
-      <div className="absolute bottom-1/3 right-1/4 w-28 h-28 bg-primary/15 rounded-full blur-xl animate-float-cyber" style={{animationDelay: '1s'}}></div>
+      {/* Enhanced Deep Space Nebula Effects with Blue Theme */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/8 rounded-full blur-3xl animate-pulse" style={{animationDuration: '12s'}}></div>
+        <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{animationDuration: '15s', animationDelay: '3s'}}></div>
+        <div className="absolute top-1/2 right-1/5 w-64 h-64 bg-blue-400/6 rounded-full blur-3xl animate-pulse" style={{animationDuration: '18s', animationDelay: '6s'}}></div>
+        <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-indigo-500/7 rounded-full blur-3xl animate-pulse" style={{animationDuration: '14s', animationDelay: '2s'}}></div>
+      </div>
+
+      {/* Revolving White Particle System */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Medium Blue Particles */}
+        {[...Array(25)].map((_, i) => {
+          const size = 3 + Math.random() * 3
+          const startX = Math.random() * 100
+          const startY = Math.random() * 100
+          const duration = 15 + Math.random() * 20
+          const delay = Math.random() * 10
+          return (
+            <div
+              key={`medium-${i}`}
+              className="absolute bg-blue-400 rounded-full"
+              style={{
+                width: `${size}px`,
+                height: `${size}px`,
+                left: `${startX}%`,
+                top: `${startY}%`,
+                animation: `revolve135-medium ${duration}s linear infinite`,
+                animationDelay: `${delay}s`,
+                boxShadow: `0 0 ${size * 3}px rgba(59, 130, 246, 0.9), 0 0 ${size * 6}px rgba(59, 130, 246, 0.6), 0 0 ${size * 9}px rgba(59, 130, 246, 0.3)`,
+                opacity: 0.8 + Math.random() * 0.2
+              }}
+            />
+          )
+        })}
+
+        {/* Small Blue Particles */}
+        {[...Array(35)].map((_, i) => {
+          const size = 2 + Math.random() * 2
+          const startX = Math.random() * 100
+          const startY = Math.random() * 100
+          const duration = 10 + Math.random() * 15
+          const delay = Math.random() * 8
+          return (
+            <div
+              key={`small-${i}`}
+              className="absolute bg-blue-300 rounded-full"
+              style={{
+                width: `${size}px`,
+                height: `${size}px`,
+                left: `${startX}%`,
+                top: `${startY}%`,
+                animation: `revolve135-small ${duration}s linear infinite`,
+                animationDelay: `${delay}s`,
+                boxShadow: `0 0 ${size * 4}px rgba(96, 165, 250, 0.8), 0 0 ${size * 7}px rgba(96, 165, 250, 0.5)`,
+                opacity: 0.6 + Math.random() * 0.4
+              }}
+            />
+          )
+        })}
+      </div>
+
+      {/* CSS Animations for 135-degree Revolution */}
+      <style jsx>{`
+        @keyframes revolve135-medium {
+          0% { transform: translate(0, 0); }
+          100% { transform: translate(100vw, 100vh); }
+        }
+        @keyframes revolve135-small {
+          0% { transform: translate(0, 0) rotate(0deg); }
+          100% { transform: translate(120vw, 120vh) rotate(360deg); }
+        }
+      `}</style>
 
       {/* Perfectly Centered Container */}
       <div className="w-full max-w-md mx-auto flex items-center justify-center min-h-screen relative z-10">

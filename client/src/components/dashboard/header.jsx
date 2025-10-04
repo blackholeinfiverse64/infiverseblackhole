@@ -124,34 +124,32 @@ export function DashboardHeader({ sidebarOpen, onSidebarToggle }) {
           </Button>
         </div>
 
-        {/* Enhanced Search Bar */}
-        <div className="relative max-w-md flex-1 mx-4 hidden md:flex">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gold/70" />
-          <Input
-            type="search"
-            placeholder="Search cosmic workspace..."
-            className="w-full pl-12 pr-4 py-3 bg-background/20 backdrop-blur-sm border-primary/30 focus:border-gold/50 focus:ring-2 focus:ring-gold/20 rounded-xl text-white placeholder:text-white/50 glow-input transition-all duration-300"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-            <kbd className="px-2 py-1 text-xs font-mono text-gold/60 bg-gold/10 rounded border border-gold/20">
-              ⌘K
-            </kbd>
-          </div>
-        </div>
+        {/* Spacer */}
+        <div className="flex-1"></div>
 
         {/* Enhanced Right Side Actions */}
-        <div className="flex flex-1 items-center justify-end space-x-3">
+        <div className="flex items-center justify-end space-x-3">
+          {/* Enhanced Search Bar - Moved to Right */}
+          <div className="relative max-w-sm hidden md:flex">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gold/70" />
+            <Input
+              type="search"
+              placeholder="Search..."
+              className="w-48 pl-10 pr-3 py-2 bg-background/20 backdrop-blur-sm border-primary/30 focus:border-gold/50 focus:ring-2 focus:ring-gold/20 rounded-xl text-white placeholder:text-white/50 glow-input transition-all duration-300"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+
           <NotificationsPopover />
 
           {/* Enhanced User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-10 w-10 rounded-full glow-hover transition-all duration-300">
-                <Avatar className="h-9 w-9 ring-2 ring-primary/20 transition-all duration-300 hover:ring-primary/40">
+                <Avatar className="h-9 w-9 rounded-full transition-all duration-300">
                   <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
-                  <AvatarFallback className="hero-gradient text-white font-semibold">
+                  <AvatarFallback className="hero-gradient text-white font-semibold rounded-full">
                     {user?.name?.charAt(0) || "U"}
                   </AvatarFallback>
                 </Avatar>
@@ -166,9 +164,9 @@ export function DashboardHeader({ sidebarOpen, onSidebarToggle }) {
               <DropdownMenuLabel className="font-normal p-3">
                 <div className="flex flex-col space-y-2">
                   <div className="flex items-center space-x-3">
-                    <Avatar className="h-10 w-10">
+                    <Avatar className="h-10 w-10 rounded-full">
                       <AvatarImage src="/placeholder.svg?height=40&width=40" alt="User" />
-                      <AvatarFallback className="hero-gradient text-white">
+                      <AvatarFallback className="hero-gradient text-white rounded-full">
                         {user?.name?.charAt(0) || "U"}
                       </AvatarFallback>
                     </Avatar>
