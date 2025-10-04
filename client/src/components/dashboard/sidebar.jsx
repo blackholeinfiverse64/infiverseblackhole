@@ -47,14 +47,14 @@ export function DashboardSidebar() {
   }
 
   return (
-    <div className="h-full w-80 bg-background/20 backdrop-blur-xl border-r border-primary/20 glass-sidebar relative overflow-hidden">
+    <div className="h-full w-80 bg-background/20 backdrop-blur-xl glass-sidebar relative overflow-hidden">
       {/* Sidebar background effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-background/10 to-accent/5 pointer-events-none"></div>
       <div className="absolute inset-0 cosmic-grid opacity-10 pointer-events-none"></div>
       
       <div className="flex flex-col h-full relative z-10">
         {/* Enhanced Header */}
-        <div className="flex items-center gap-3 p-6 border-b border-primary/20">
+        <div className="flex items-center gap-3 p-6">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary via-accent to-primary p-0.5 glow-primary">
             <div className="w-full h-full rounded-lg bg-background/90 flex items-center justify-center">
               <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -84,7 +84,7 @@ export function DashboardSidebar() {
                   to={route.href}
                   className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all duration-300 group relative overflow-hidden ${
                     active
-                      ? "bg-gradient-to-r from-primary/20 to-accent/20 text-white shadow-lg glow-primary border border-primary/30"
+                      ? "bg-gradient-to-r from-primary/20 to-accent/20 text-white shadow-lg glow-primary"
                       : "text-white/80 hover:text-white hover:bg-white/5 hover:glow-subtle"
                   }`}
                 >
@@ -105,7 +105,7 @@ export function DashboardSidebar() {
         </nav>
 
         {/* Enhanced Footer */}
-        <div className="p-4 border-t border-primary/20">
+        <div className="p-4">
           <div className="space-y-1 mb-4">
             <Link
               to="/settings"
@@ -117,7 +117,7 @@ export function DashboardSidebar() {
           </div>
           
           {/* Enhanced User Profile & Logout */}
-          <div className="p-3 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20">
+          <div className="p-3 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-gold to-primary flex items-center justify-center glow-gold">
                 <span className="text-sm font-bold text-background">
@@ -131,7 +131,7 @@ export function DashboardSidebar() {
             </div>
             <button
               onClick={logout}
-              className="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-white/80 hover:text-white bg-red-500/20 hover:bg-red-500/30 rounded-lg transition-all duration-300 border border-red-500/30 hover:border-red-500/50 hover:glow-red"
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-white/80 hover:text-white bg-red-500/20 hover:bg-red-500/30 rounded-lg transition-all duration-300 hover:glow-red"
             >
               <LogOut className="w-4 h-4" />
               Sign Out

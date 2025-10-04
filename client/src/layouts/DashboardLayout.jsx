@@ -10,7 +10,7 @@ import { useAuth } from "../context/auth-context"
 import api from "../lib/api"
 
 export function DashboardLayout() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false) // Start with sidebar closed
   const { user } = useAuth()
   const [showStartDayDialog, setShowStartDayDialog] = useState(false)
   const [checkedPrompt, setCheckedPrompt] = useState(false)
@@ -73,7 +73,9 @@ export function DashboardLayout() {
         <CosmicOrbs count={12} />
         
         {/* Content Area with proper padding for header and sidebar */}
-        <div className="min-h-screen w-full pt-18 md:pl-80 overflow-auto space-scrollbar relative z-10">
+        <div className={`min-h-screen w-full pt-18 transition-all duration-300 overflow-auto space-scrollbar relative z-10 ${
+          sidebarOpen ? 'md:pl-80' : 'md:pl-0'
+        }`}>
           <div className="p-4 md:p-6 lg:p-8">
             <div className="max-w-full mx-auto animate-fade-in">
               <Outlet />
@@ -89,7 +91,9 @@ export function DashboardLayout() {
 
       {/* LAYER 2: Overlay - DashboardSidebar (Fixed Position) */}
       {/* Desktop Sidebar */}
-      <div className="hidden md:block fixed left-0 top-0 bottom-0 w-80 z-50">
+      <div className={`hidden md:block fixed left-0 top-0 bottom-0 w-80 z-50 transform transition-all duration-300 ${
+        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+      }`}>
         <DashboardSidebar />
       </div>
 
@@ -110,7 +114,9 @@ export function DashboardLayout() {
       </div>
 
       {/* LAYER 3: Overlay - DashboardHeader (Fixed Position) */}
-      <div className="fixed top-0 right-0 left-0 md:left-80 z-40 h-18">
+      <div className={`fixed top-0 right-0 left-0 z-40 h-18 transition-all duration-300 ${
+        sidebarOpen ? 'md:left-80' : 'md:left-0'
+      }`}>
         <DashboardHeader sidebarOpen={sidebarOpen} onSidebarToggle={toggleSidebar} />
       </div>
     </div>

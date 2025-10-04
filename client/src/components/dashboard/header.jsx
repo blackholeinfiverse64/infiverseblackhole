@@ -82,7 +82,7 @@
 // }
 
 import { useState } from "react"
-import { Search } from "lucide-react"
+import { Search, Menu, X } from "lucide-react"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import {
@@ -96,7 +96,6 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { NotificationsPopover } from "../notifications/notifications-popover"
 import { useAuth } from "../../context/auth-context"
-import { MobileMenuButton } from "../ui/mobile-menu-button"
 
 export function DashboardHeader({ sidebarOpen, onSidebarToggle }) {
   const [searchQuery, setSearchQuery] = useState("")
@@ -109,17 +108,24 @@ export function DashboardHeader({ sidebarOpen, onSidebarToggle }) {
       <div className="absolute inset-0 cosmic-grid opacity-5 pointer-events-none"></div>
       
       <div className="flex h-full items-center justify-between px-4 md:px-8 relative z-10">
-        {/* Mobile Menu Button */}
-        <div className="block md:hidden z-50">
-          <MobileMenuButton 
-            isOpen={sidebarOpen} 
-            onClick={onSidebarToggle} 
-            className="mr-3 p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-primary/20 hover:border-primary/40 transition-all duration-300 hover:glow-subtle" 
-          />
+        {/* Universal Sidebar Toggle Button */}
+        <div className="flex items-center space-x-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onSidebarToggle}
+            className="p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-primary/20 hover:border-gold/40 transition-all duration-300 hover:glow-subtle group"
+            aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"}
+          >
+            <div className="relative w-5 h-5">
+              <Menu className={`absolute w-5 h-5 text-gold/70 group-hover:text-gold transition-all duration-300 ${sidebarOpen ? 'opacity-0 rotate-180 scale-75' : 'opacity-100 rotate-0 scale-100'}`} />
+              <X className={`absolute w-5 h-5 text-gold/70 group-hover:text-gold transition-all duration-300 ${sidebarOpen ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-180 scale-75'}`} />
+            </div>
+          </Button>
         </div>
 
         {/* Enhanced Search Bar */}
-        <div className="relative max-w-md flex-1 hidden md:flex">
+        <div className="relative max-w-md flex-1 mx-4 hidden md:flex">
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gold/70" />
           <Input
             type="search"

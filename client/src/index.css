@@ -1,7 +1,4 @@
 @import "tailwindcss";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* Force Dark Theme for Space Aesthetic */
 html {
@@ -64,7 +61,6 @@ html, body, #root {
 .glass-sidebar {
   background: rgba(10, 10, 15, 0.3);
   backdrop-filter: blur(20px);
-  border-right: 1px solid rgba(168, 85, 247, 0.2);
 }
 
 .glass-header {
@@ -237,7 +233,6 @@ html, body, #root {
     z-index: -1;
   }
 }
-}
 
 /* Remove auth-container overrides to use global theme */
 
@@ -255,7 +250,6 @@ html, body, #root {
 }
 
 .dialog-content {
-  
   background-color: white;
   border-radius: 8px;
   padding: 20px;
