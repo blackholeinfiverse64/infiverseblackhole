@@ -55,25 +55,18 @@ export function DashboardLayout() {
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen)
-    // Add a class to the body to prevent scrolling when sidebar is open
-    if (!sidebarOpen) {
-      document.body.classList.add('sidebar-open')
-    } else {
-      document.body.classList.remove('sidebar-open')
-    }
   }
 
   return (
     <div className="min-h-screen bg-background cosmic-background relative overflow-hidden">
       {/* LAYER 1: Base - Main Content Area with Enhanced Universe Background */}
       <main className="min-h-screen w-full relative">
-        {/* Enhanced Universe Background with revolving particles */}
+        {/* Enhanced Universe Background with optimized particles */}
         <UniverseBackground />
         <SpaceParticles count={60} />
-        <CosmicOrbs count={12} />
         
         {/* Content Area with proper padding for header and sidebar */}
-        <div className={`min-h-screen w-full pt-18 transition-all duration-300 overflow-auto space-scrollbar relative z-10 ${
+        <div className={`min-h-screen w-full pt-18 transition-all duration-200 overflow-auto space-scrollbar relative z-10 ${
           sidebarOpen ? 'md:pl-80' : 'md:pl-0'
         }`}>
           <div className="p-4 md:p-6 lg:p-8">
@@ -91,7 +84,7 @@ export function DashboardLayout() {
 
       {/* LAYER 2: Overlay - DashboardSidebar (Fixed Position) */}
       {/* Desktop Sidebar */}
-      <div className={`hidden md:block fixed left-0 top-0 bottom-0 w-80 z-50 transform transition-all duration-300 ${
+      <div className={`hidden md:block fixed left-0 top-0 bottom-0 w-80 z-50 will-change-transform transition-transform duration-200 ease-out ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
         <DashboardSidebar />
@@ -100,21 +93,21 @@ export function DashboardLayout() {
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div
-          className="md:hidden fixed inset-0 z-40 bg-black/70 backdrop-blur-lg transition-all duration-300 animate-fade-in"
+          className="md:hidden fixed inset-0 z-40 bg-black/50 transition-opacity duration-200"
           onClick={() => toggleSidebar()}
         />
       )}
       
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-80 transform transition-all duration-300 md:hidden ${
-          sidebarOpen ? 'translate-x-0 glow-primary' : '-translate-x-full'
+        className={`fixed inset-y-0 left-0 z-50 w-80 will-change-transform transition-transform duration-200 ease-out md:hidden ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <DashboardSidebar />
       </div>
 
       {/* LAYER 3: Overlay - DashboardHeader (Fixed Position) */}
-      <div className={`fixed top-0 right-0 left-0 z-40 h-18 transition-all duration-300 ${
+      <div className={`fixed top-0 right-0 left-0 z-40 h-18 will-change-auto transition-all duration-200 ${
         sidebarOpen ? 'md:left-80' : 'md:left-0'
       }`}>
         <DashboardHeader sidebarOpen={sidebarOpen} onSidebarToggle={toggleSidebar} />

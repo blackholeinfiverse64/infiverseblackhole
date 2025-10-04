@@ -3,72 +3,57 @@ import React from 'react'
 export function SpaceParticles({ count = 50, className = '' }) {
   const particles = Array.from({ length: count }, (_, i) => ({
     id: i,
-    size: Math.random() * 3 + 1, // Small white particles
+    size: Math.random() * 2 + 0.5, // Smaller white particles
     centerX: Math.random() * 100, // Center point X for orbit
     centerY: Math.random() * 100, // Center point Y for orbit
     animationDelay: Math.random() * 20,
-    animationDuration: Math.random() * 15 + 15, // Slower revolution
-    orbitRadius: Math.random() * 150 + 50, // Orbit radius in pixels
+    animationDuration: Math.random() * 25 + 20, // Varied speeds
+    orbitRadius: Math.random() * 200 + 30, // Varied orbit sizes
     rotationDirection: Math.random() > 0.5 ? 1 : -1, // Clockwise or counter-clockwise
   }))
 
   return (
     <>
-      {/* CSS for 135-degree orbital revolution */}
+      {/* CSS for optimized diagonal movement */}
       <style jsx>{`
-        @keyframes orbit135 {
+        @keyframes diagonal135 {
           0% {
-            transform: rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg);
-          }
-          37.5% {
-            transform: rotate(135deg) translateX(var(--orbit-radius)) rotate(-135deg);
-          }
-          75% {
-            transform: rotate(270deg) translateX(var(--orbit-radius)) rotate(-270deg);
+            transform: translate3d(0, 0, 0);
           }
           100% {
-            transform: rotate(360deg) translateX(var(--orbit-radius)) rotate(-360deg);
+            transform: translate3d(200px, 200px, 0);
           }
         }
 
-        @keyframes orbit135Reverse {
+        @keyframes diagonal135Reverse {
           0% {
-            transform: rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg);
-          }
-          37.5% {
-            transform: rotate(-135deg) translateX(var(--orbit-radius)) rotate(135deg);
-          }
-          75% {
-            transform: rotate(-270deg) translateX(var(--orbit-radius)) rotate(270deg);
+            transform: translate3d(200px, 200px, 0);
           }
           100% {
-            transform: rotate(-360deg) translateX(var(--orbit-radius)) rotate(360deg);
+            transform: translate3d(0, 0, 0);
           }
         }
         
-        @keyframes particle-glow {
+        @keyframes white-particle-glow {
           0%, 100% {
-            opacity: 0.4;
-            transform: scale(1);
-            filter: blur(0.5px);
+            opacity: 0.3;
           }
           50% {
-            opacity: 0.9;
-            transform: scale(1.5);
-            filter: blur(0px);
+            opacity: 0.7;
           }
         }
 
-        .particle-orbit {
-          animation: var(--orbit-direction) var(--duration) linear infinite, particle-glow 4s ease-in-out infinite;
+        .particle-diagonal {
+          will-change: transform;
+          animation: var(--diagonal-direction) var(--duration) linear infinite, white-particle-glow 3s ease-in-out infinite;
         }
 
-        .particle-orbit-clockwise {
-          --orbit-direction: orbit135;
+        .particle-diagonal-normal {
+          --diagonal-direction: diagonal135;
         }
 
-        .particle-orbit-counter {
-          --orbit-direction: orbit135Reverse;
+        .particle-diagonal-reverse {
+          --diagonal-direction: diagonal135Reverse;
         }
       `}</style>
       
@@ -76,31 +61,23 @@ export function SpaceParticles({ count = 50, className = '' }) {
         {particles.map((particle) => (
           <div
             key={particle.id}
-            className="absolute"
+            className={`absolute particle-diagonal ${
+              particle.rotationDirection > 0 ? 'particle-diagonal-normal' : 'particle-diagonal-reverse'
+            } bg-white rounded-full`}
             style={{
+              width: `${particle.size}px`,
+              height: `${particle.size}px`,
               left: `${particle.centerX}%`,
               top: `${particle.centerY}%`,
-              '--orbit-radius': `${particle.orbitRadius}px`,
               '--duration': `${particle.animationDuration}s`,
+              animationDelay: `${particle.animationDelay}s`,
+              boxShadow: `
+                0 0 ${particle.size * 4}px rgba(255, 255, 255, 0.8),
+                0 0 ${particle.size * 8}px rgba(255, 255, 255, 0.4),
+                0 0 ${particle.size * 12}px rgba(255, 255, 255, 0.2)
+              `,
             }}
-          >
-            <div
-              className={`particle-orbit ${
-                particle.rotationDirection > 0 ? 'particle-orbit-clockwise' : 'particle-orbit-counter'
-              } bg-white rounded-full`}
-              style={{
-                width: `${particle.size}px`,
-                height: `${particle.size}px`,
-                animationDelay: `${particle.animationDelay}s`,
-                boxShadow: `
-                  0 0 ${particle.size * 3}px rgba(255, 255, 255, 0.9),
-                  0 0 ${particle.size * 6}px rgba(168, 85, 247, 0.5),
-                  0 0 ${particle.size * 9}px rgba(245, 158, 11, 0.3),
-                  0 0 ${particle.size * 12}px rgba(139, 92, 246, 0.2)
-                `,
-              }}
-            />
-          </div>
+          />
         ))}
       </div>
     </>
@@ -208,9 +185,9 @@ export function UniverseBackground({ className = '' }) {
 
         .nebula-clouds {
           background: 
-            radial-gradient(ellipse at 20% 50%, rgba(168, 85, 247, 0.1) 0%, transparent 50%),
-            radial-gradient(ellipse at 80% 20%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
-            radial-gradient(ellipse at 40% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
+            radial-gradient(ellipse at 20% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 20%, rgba(255, 255, 255, 0.04) 0%, transparent 50%),
+            radial-gradient(ellipse at 40% 80%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
           animation: nebula-flow 40s linear infinite;
         }
       `}</style>

@@ -193,11 +193,8 @@ export default {
   				'66%': { transform: 'translate(-5px, 5px) scale(0.9)' }
   			},
   			'cosmic-drift': {
-  				'0%': { transform: 'translateY(0px) translateX(0px) rotate(0deg)' },
-  				'25%': { transform: 'translateY(-20px) translateX(10px) rotate(90deg)' },
-  				'50%': { transform: 'translateY(-10px) translateX(-10px) rotate(180deg)' },
-  				'75%': { transform: 'translateY(-30px) translateX(5px) rotate(270deg)' },
-  				'100%': { transform: 'translateY(0px) translateX(0px) rotate(360deg)' }
+  				'0%': { transform: 'translateX(0px) translateY(0px)' },
+  				'100%': { transform: 'translateX(200px) translateY(200px)' }
   			},
   			'hero-gradient': {
   				'0%': { 'background-position': '0% 50%' },

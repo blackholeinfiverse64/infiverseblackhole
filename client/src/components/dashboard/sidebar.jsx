@@ -47,10 +47,9 @@ export function DashboardSidebar() {
   }
 
   return (
-    <div className="h-full w-80 bg-background/20 backdrop-blur-xl glass-sidebar relative overflow-hidden">
+    <div className="h-full w-80 bg-background/30 backdrop-blur-md border-r border-white/10 relative overflow-hidden">
       {/* Sidebar background effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-background/10 to-accent/5 pointer-events-none"></div>
-      <div className="absolute inset-0 cosmic-grid opacity-10 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/3 via-background/5 to-accent/3 pointer-events-none"></div>
       
       <div className="flex flex-col h-full relative z-10">
         {/* Enhanced Header */}
@@ -82,21 +81,18 @@ export function DashboardSidebar() {
                 <Link
                   key={route.href}
                   to={route.href}
-                  className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all duration-300 group relative overflow-hidden ${
+                  className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-colors duration-150 group relative ${
                     active
-                      ? "bg-gradient-to-r from-primary/20 to-accent/20 text-white shadow-lg glow-primary"
-                      : "text-white/80 hover:text-white hover:bg-white/5 hover:glow-subtle"
+                      ? "bg-primary/20 text-white border border-primary/30"
+                      : "text-white/80 hover:text-white hover:bg-white/5"
                   }`}
                 >
-                  {active && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 animate-pulse"></div>
-                  )}
-                  <Icon className={`w-5 h-5 transition-all duration-300 relative z-10 ${
-                    active ? "text-gold glow-icon" : "text-white/70 group-hover:text-gold"
+                  <Icon className={`w-5 h-5 transition-colors duration-150 ${
+                    active ? "text-gold" : "text-white/70 group-hover:text-gold"
                   }`} />
-                  <span className="relative z-10 group-hover:text-gold transition-colors duration-300">{route.title}</span>
+                  <span className="group-hover:text-gold transition-colors duration-150">{route.title}</span>
                   {active && (
-                    <div className="absolute right-2 w-2 h-2 bg-gold rounded-full glow-dot animate-pulse"></div>
+                    <div className="absolute right-2 w-2 h-2 bg-gold rounded-full"></div>
                   )}
                 </Link>
               );
@@ -109,17 +105,17 @@ export function DashboardSidebar() {
           <div className="space-y-1 mb-4">
             <Link
               to="/settings"
-              className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-300 group text-white/70 hover:text-white hover:bg-white/5"
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors duration-150 group text-white/70 hover:text-white hover:bg-white/5"
             >
-              <Settings className="w-4 h-4 transition-colors duration-300 group-hover:text-gold" />
-              <span className="group-hover:text-gold transition-colors duration-300">Settings</span>
+              <Settings className="w-4 h-4 transition-colors duration-150 group-hover:text-gold" />
+              <span className="group-hover:text-gold transition-colors duration-150">Settings</span>
             </Link>
           </div>
           
           {/* Enhanced User Profile & Logout */}
-          <div className="p-3 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10">
+          <div className="p-3 rounded-xl bg-primary/10 border border-primary/20">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-gold to-primary flex items-center justify-center glow-gold">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-gold to-primary flex items-center justify-center">
                 <span className="text-sm font-bold text-background">
                   {user?.name?.charAt(0) || "U"}
                 </span>
@@ -131,7 +127,7 @@ export function DashboardSidebar() {
             </div>
             <button
               onClick={logout}
-              className="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-white/80 hover:text-white bg-red-500/20 hover:bg-red-500/30 rounded-lg transition-all duration-300 hover:glow-red"
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-white/80 hover:text-white bg-red-500/20 hover:bg-red-500/30 rounded-lg transition-colors duration-150"
             >
               <LogOut className="w-4 h-4" />
               Sign Out
