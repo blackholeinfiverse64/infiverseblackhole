@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import blackholeLogo from "../assets/blackhole.png"
 
 export function SplashScreen({ onComplete }) {
   const [isVisible, setIsVisible] = useState(true)
@@ -39,47 +40,41 @@ export function SplashScreen({ onComplete }) {
 
   return (
     <div className="fixed inset-0 z-[9999] bg-background flex items-center justify-center overflow-hidden">
-      {/* Enhanced Cosmic Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-accent/20"></div>
-      <div className="absolute inset-0 cosmic-grid opacity-30 animate-pulse"></div>
+      {/* Enhanced Space Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-background to-slate-900"></div>
+      <div className="absolute inset-0 cosmic-grid opacity-15"></div>
       
-      {/* Animated Cosmic Elements */}
-      <div className="absolute top-20 left-20 w-32 h-32 bg-primary/30 rounded-full blur-xl animate-float-cyber glow-primary"></div>
-      <div className="absolute bottom-20 right-20 w-40 h-40 bg-accent/30 rounded-full blur-xl animate-float-cyber glow-accent" style={{animationDelay: '2s'}}></div>
-      <div className="absolute top-1/2 left-10 w-24 h-24 bg-gold/20 rounded-full blur-xl animate-float-cyber glow-gold" style={{animationDelay: '4s'}}></div>
-      <div className="absolute bottom-1/3 right-1/4 w-28 h-28 bg-primary/25 rounded-full blur-xl animate-float-cyber" style={{animationDelay: '1s'}}></div>
-      <div className="absolute top-1/4 right-1/3 w-36 h-36 bg-accent/25 rounded-full blur-xl animate-float-cyber" style={{animationDelay: '3s'}}></div>
+      {/* Deep Space Nebula Effects */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/3 rounded-full blur-3xl animate-pulse" style={{animationDuration: '12s'}}></div>
+        <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-accent/3 rounded-full blur-3xl animate-pulse" style={{animationDuration: '15s', animationDelay: '3s'}}></div>
+        <div className="absolute top-1/2 right-1/5 w-64 h-64 bg-gold/2 rounded-full blur-3xl animate-pulse" style={{animationDuration: '18s', animationDelay: '6s'}}></div>
+      </div>
 
       {/* Main Content */}
       <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-8 px-4">
-        {/* Blackhole Logo Container */}
+        {/* Blackhole Logo Image */}
         <div className="relative">
           {/* Outer Glow Ring */}
-          <div className="absolute inset-0 w-48 h-48 rounded-full bg-gradient-to-r from-gold via-primary to-accent opacity-30 blur-2xl animate-pulse"></div>
+          <div className="absolute inset-0 w-64 h-64 rounded-full bg-gradient-to-r from-gold/20 via-primary/20 to-accent/20 blur-3xl animate-pulse"></div>
           
-          {/* Main Blackhole Container */}
-          <div className="relative w-40 h-40 mx-auto">
-            {/* Event Horizon - Outer Ring */}
-            <div className="absolute inset-0 rounded-full border-4 border-gold/60 animate-spin" style={{animationDuration: '8s'}}></div>
-            <div className="absolute inset-2 rounded-full border-2 border-primary/50 animate-spin" style={{animationDuration: '6s', animationDirection: 'reverse'}}></div>
-            <div className="absolute inset-4 rounded-full border border-accent/40 animate-spin" style={{animationDuration: '4s'}}></div>
+          {/* Blackhole Image Container */}
+          <div className="relative w-48 h-48 mx-auto">
+            {/* Rotating Event Horizon Ring */}
+            <div className="absolute -inset-4 rounded-full border border-gold/30 animate-spin" style={{animationDuration: '10s'}}></div>
+            <div className="absolute -inset-6 rounded-full border border-primary/20 animate-spin" style={{animationDuration: '15s', animationDirection: 'reverse'}}></div>
             
-            {/* Accretion Disk */}
-            <div className="absolute inset-6 rounded-full bg-gradient-to-r from-gold/30 via-primary/20 to-accent/30 animate-spin glow-primary" style={{animationDuration: '3s'}}></div>
+            {/* Blackhole Image */}
+            <img 
+              src={blackholeLogo} 
+              alt="Blackhole Logo" 
+              className="w-full h-full object-contain drop-shadow-2xl animate-pulse"
+              style={{animationDuration: '3s'}}
+            />
             
-            {/* Core Blackhole */}
-            <div className="absolute inset-8 rounded-full bg-gradient-to-br from-transparent via-background/50 to-background border-2 border-gold/30 shadow-2xl">
-              <div className="absolute inset-2 rounded-full bg-background/90 shadow-inner">
-                <div className="absolute inset-1 rounded-full bg-gradient-to-br from-primary/20 to-background">
-                  {/* Singularity */}
-                  <div className="absolute inset-4 rounded-full bg-background border border-gold/20 animate-pulse"></div>
-                </div>
-              </div>
-            </div>
-
-            {/* Gravitational Lensing Effect */}
-            <div className="absolute -inset-4 rounded-full border border-gold/20 animate-ping" style={{animationDuration: '2s'}}></div>
-            <div className="absolute -inset-6 rounded-full border border-primary/10 animate-ping" style={{animationDuration: '3s', animationDelay: '0.5s'}}></div>
+            {/* Gravitational Lensing Effects */}
+            <div className="absolute -inset-8 rounded-full border border-gold/15 animate-ping" style={{animationDuration: '2s'}}></div>
+            <div className="absolute -inset-10 rounded-full border border-primary/10 animate-ping" style={{animationDuration: '3s', animationDelay: '0.5s'}}></div>
           </div>
         </div>
 
@@ -120,21 +115,115 @@ export function SplashScreen({ onComplete }) {
         </div>
       </div>
 
-      {/* Particle System */}
-      <div className="absolute inset-0 pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-gold/30 rounded-full animate-float-cyber"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${3 + Math.random() * 4}s`
-            }}
-          ></div>
-        ))}
+      {/* Large Scale Revolving White Particle System */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Medium White Particles */}
+        {[...Array(40)].map((_, i) => {
+          const size = 2 + Math.random() * 2 // 2-4px
+          const startX = Math.random() * 100
+          const startY = Math.random() * 100
+          const duration = 15 + Math.random() * 20 // 15-35s
+          const delay = Math.random() * 10
+          return (
+            <div
+              key={`medium-${i}`}
+              className="absolute bg-white rounded-full"
+              style={{
+                width: `${size}px`,
+                height: `${size}px`,
+                left: `${startX}%`,
+                top: `${startY}%`,
+                animation: `revolve135-medium ${duration}s linear infinite`,
+                animationDelay: `${delay}s`,
+                boxShadow: `
+                  0 0 ${size * 2}px rgba(255, 255, 255, 0.8),
+                  0 0 ${size * 4}px rgba(255, 255, 255, 0.4)
+                `,
+                opacity: 0.6 + Math.random() * 0.4
+              }}
+            />
+          )
+        })}
+
+        {/* Small White Particles */}
+        {[...Array(60)].map((_, i) => {
+          const size = 1 + Math.random() * 1.5 // 1-2.5px
+          const startX = Math.random() * 100
+          const startY = Math.random() * 100
+          const duration = 10 + Math.random() * 15 // 10-25s
+          const delay = Math.random() * 8
+          return (
+            <div
+              key={`small-${i}`}
+              className="absolute bg-white rounded-full"
+              style={{
+                width: `${size}px`,
+                height: `${size}px`,
+                left: `${startX}%`,
+                top: `${startY}%`,
+                animation: `revolve135-small ${duration}s linear infinite`,
+                animationDelay: `${delay}s`,
+                boxShadow: `0 0 ${size * 3}px rgba(255, 255, 255, 0.6)`,
+                opacity: 0.4 + Math.random() * 0.4
+              }}
+            />
+          )
+        })}
+
+        {/* Tiny Dust Particles */}
+        {[...Array(80)].map((_, i) => {
+          const size = 0.5 + Math.random() * 1 // 0.5-1.5px
+          const startX = Math.random() * 100
+          const startY = Math.random() * 100
+          const duration = 8 + Math.random() * 12 // 8-20s
+          const delay = Math.random() * 6
+          return (
+            <div
+              key={`tiny-${i}`}
+              className="absolute bg-white rounded-full"
+              style={{
+                width: `${size}px`,
+                height: `${size}px`,
+                left: `${startX}%`,
+                top: `${startY}%`,
+                animation: `revolve135-tiny ${duration}s linear infinite`,
+                animationDelay: `${delay}s`,
+                opacity: 0.3 + Math.random() * 0.3
+              }}
+            />
+          )
+        })}
       </div>
+
+      {/* CSS Animations for 135-degree Revolution */}
+      <style jsx>{`
+        @keyframes revolve135-medium {
+          0% {
+            transform: translate(0, 0);
+          }
+          100% {
+            transform: translate(100vw, 100vh);
+          }
+        }
+
+        @keyframes revolve135-small {
+          0% {
+            transform: translate(0, 0) rotate(0deg);
+          }
+          100% {
+            transform: translate(120vw, 120vh) rotate(360deg);
+          }
+        }
+
+        @keyframes revolve135-tiny {
+          0% {
+            transform: translate(0, 0);
+          }
+          100% {
+            transform: translate(110vw, 110vh);
+          }
+        }
+      `}</style>
     </div>
   )
 }
