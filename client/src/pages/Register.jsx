@@ -352,6 +352,7 @@ import { Loader2, Mail } from "lucide-react"
 import { api } from "../lib/api"
 import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert"
 import { useAuth } from "@/context/auth-context"
+import blackholeLogo from "../assets/blackhole.png"
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -557,9 +558,12 @@ export default function Register() {
         <CardHeader className="space-y-1 text-center relative z-10 p-8">
           <div className="mx-auto w-20 h-20 bg-gradient-to-br from-gold via-accent to-gold p-0.5 rounded-2xl glow-gold animate-glow-pulse transform -rotate-3 hover:rotate-0 transition-all duration-500">
             <div className="w-full h-full rounded-xl bg-background/90 flex items-center justify-center backdrop-blur-sm">
-              <svg className="w-10 h-10 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-              </svg>
+              <img 
+                src={blackholeLogo} 
+                alt="Blackhole Logo" 
+                className="w-10 h-10 object-contain drop-shadow-lg animate-pulse"
+                style={{animationDuration: '3s'}}
+              />
             </div>
           </div>
           <CardTitle className="text-4xl font-bold text-white glow-text mb-2">

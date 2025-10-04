@@ -43,26 +43,27 @@ export function SplashScreen({ onComplete }) {
       <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-8 px-4">
         {/* Blackhole Logo Image */}
         <div className="relative">
-          {/* Outer Glow Ring */}
-          <div className="absolute inset-0 w-64 h-64 rounded-full bg-gradient-to-r from-blue-500/10 via-white/10 to-gray-400/10 blur-3xl animate-pulse"></div>
+          {/* Golden Flame Effects */}
+          <div className="absolute -inset-12 rounded-full bg-gradient-to-r from-gold/5 via-yellow-400/10 to-gold/5 blur-2xl animate-pulse" style={{animationDuration: '2s'}}></div>
+          <div className="absolute -inset-16 rounded-full bg-gradient-to-r from-yellow-500/3 via-gold/8 to-yellow-500/3 blur-3xl animate-pulse" style={{animationDuration: '3s', animationDelay: '0.5s'}}></div>
           
           {/* Blackhole Image Container */}
           <div className="relative w-48 h-48 mx-auto">
-            {/* Rotating Event Horizon Ring */}
-            <div className="absolute -inset-4 rounded-full border border-gray-400/30 animate-spin" style={{animationDuration: '10s'}}></div>
-            <div className="absolute -inset-6 rounded-full border border-white/20 animate-spin" style={{animationDuration: '15s', animationDirection: 'reverse'}}></div>
+            {/* Golden Flame Ring Effects */}
+            <div className="absolute -inset-5 rounded-full border border-gold/50 animate-pulse shadow-lg shadow-gold/30" style={{animationDuration: '2.5s'}}></div>
+            <div className="absolute -inset-7 rounded-full border border-yellow-400/40 animate-pulse shadow-lg shadow-yellow-400/20" style={{animationDuration: '3.5s', animationDelay: '0.8s'}}></div>
             
             {/* Blackhole Image */}
             <img 
               src={blackholeLogo} 
               alt="Blackhole Logo" 
-              className="w-full h-full object-contain drop-shadow-2xl animate-pulse"
+              className="w-full h-full object-contain drop-shadow-2xl animate-pulse relative z-10"
               style={{animationDuration: '3s'}}
             />
             
-            {/* Gravitational Lensing Effects */}
-            <div className="absolute -inset-8 rounded-full border border-gray-300/15 animate-ping" style={{animationDuration: '2s'}}></div>
-            <div className="absolute -inset-10 rounded-full border border-white/10 animate-ping" style={{animationDuration: '3s', animationDelay: '0.5s'}}></div>
+            {/* Golden Flame Pulse Effects */}
+            <div className="absolute -inset-9 rounded-full border border-gold/25 animate-ping" style={{animationDuration: '2.5s', animationDelay: '0.3s'}}></div>
+            <div className="absolute -inset-11 rounded-full border border-yellow-400/20 animate-ping" style={{animationDuration: '3.5s', animationDelay: '0.7s'}}></div>
           </div>
         </div>
 
