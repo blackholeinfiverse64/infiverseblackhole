@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Outlet } from "react-router-dom"
 import { DashboardSidebar } from "../components/dashboard/sidebar"
 import { DashboardHeader } from "../components/dashboard/header"
-import { SpaceParticles, CosmicOrbs } from "../components/ui/space-particles"
+import { SpaceParticles, CosmicOrbs, UniverseBackground } from "../components/ui/space-particles"
 import EnhancedStartDayDialog from "../components/attendance/EnhancedStartDayDialog"
 import { useAuth } from "../context/auth-context"
 import api from "../lib/api"
@@ -64,46 +64,17 @@ export function DashboardLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-background cosmic-background flex overflow-hidden relative">
-      {/* Space Theme Background Elements */}
-      <SpaceParticles count={30} />
-      <CosmicOrbs count={8} />
-      <div className="fixed inset-0 cosmic-grid opacity-20 pointer-events-none"></div>
-      
-      {/* Enhanced Space Overlay for mobile */}
-      {sidebarOpen && (
-        <div
-          className="md:hidden fixed inset-0 z-40 bg-black/70 backdrop-blur-lg transition-all duration-300 animate-fade-in"
-          onClick={() => toggleSidebar()}
-        />
-      )}
-
-      {/* Fixed Sidebar for Desktop */}
-      <div className="hidden md:flex md:flex-shrink-0">
-        <div className="flex flex-col w-80">
-          <DashboardSidebar />
-        </div>
-      </div>
-
-      {/* Mobile Sidebar */}
-      <div
-        className={`fixed inset-y-0 left-0 z-50 w-80 transform transition-all duration-300 md:hidden ${
-          sidebarOpen ? 'translate-x-0 glow-primary' : '-translate-x-full'
-        }`}
-      >
-        <DashboardSidebar />
-      </div>
-
-      {/* Main Content Container */}
-      <div className="flex flex-col flex-1 overflow-hidden">
-        {/* Fixed Header */}
-        <div className="flex-shrink-0 z-40">
-          <DashboardHeader sidebarOpen={sidebarOpen} onSidebarToggle={toggleSidebar} />
-        </div>
-
-        {/* Main Content Area */}
-        <main className="flex-1 overflow-auto bg-background/50 space-scrollbar">
-          <div className="h-full p-4 md:p-6 lg:p-8">
+    <div className="min-h-screen bg-background cosmic-background relative overflow-hidden">
+      {/* LAYER 1: Base - Main Content Area with Enhanced Universe Background */}
+      <main className="min-h-screen w-full relative">
+        {/* Enhanced Universe Background with revolving particles */}
+        <UniverseBackground />
+        <SpaceParticles count={60} />
+        <CosmicOrbs count={12} />
+        
+        {/* Content Area with proper padding for header and sidebar */}
+        <div className="min-h-screen w-full pt-18 md:pl-80 overflow-auto space-scrollbar relative z-10">
+          <div className="p-4 md:p-6 lg:p-8">
             <div className="max-w-full mx-auto animate-fade-in">
               <Outlet />
               <EnhancedStartDayDialog
@@ -113,7 +84,34 @@ export function DashboardLayout() {
               />
             </div>
           </div>
-        </main>
+        </div>
+      </main>
+
+      {/* LAYER 2: Overlay - DashboardSidebar (Fixed Position) */}
+      {/* Desktop Sidebar */}
+      <div className="hidden md:block fixed left-0 top-0 bottom-0 w-80 z-50">
+        <DashboardSidebar />
+      </div>
+
+      {/* Mobile Sidebar Overlay */}
+      {sidebarOpen && (
+        <div
+          className="md:hidden fixed inset-0 z-40 bg-black/70 backdrop-blur-lg transition-all duration-300 animate-fade-in"
+          onClick={() => toggleSidebar()}
+        />
+      )}
+      
+      <div
+        className={`fixed inset-y-0 left-0 z-50 w-80 transform transition-all duration-300 md:hidden ${
+          sidebarOpen ? 'translate-x-0 glow-primary' : '-translate-x-full'
+        }`}
+      >
+        <DashboardSidebar />
+      </div>
+
+      {/* LAYER 3: Overlay - DashboardHeader (Fixed Position) */}
+      <div className="fixed top-0 right-0 left-0 md:left-80 z-40 h-18">
+        <DashboardHeader sidebarOpen={sidebarOpen} onSidebarToggle={toggleSidebar} />
       </div>
     </div>
   )

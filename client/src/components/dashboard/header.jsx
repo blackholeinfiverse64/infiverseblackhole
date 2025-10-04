@@ -103,27 +103,36 @@ export function DashboardHeader({ sidebarOpen, onSidebarToggle }) {
   const { user, logout } = useAuth()
 
   return (
-    <header className="w-full h-18 border-b border-border/30 glass-card sticky top-0 z-30">
-      <div className="flex h-full items-center justify-between px-4 md:px-8 relative">
+    <header className="w-full h-18 bg-background/10 backdrop-blur-xl border-b border-primary/20 glass-header sticky top-0 z-30 overflow-hidden">
+      {/* Header background effects */}
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-background/5 to-accent/5 pointer-events-none"></div>
+      <div className="absolute inset-0 cosmic-grid opacity-5 pointer-events-none"></div>
+      
+      <div className="flex h-full items-center justify-between px-4 md:px-8 relative z-10">
         {/* Mobile Menu Button */}
         <div className="block md:hidden z-50">
           <MobileMenuButton 
             isOpen={sidebarOpen} 
             onClick={onSidebarToggle} 
-            className="mr-3 space-button transition-all duration-300" 
+            className="mr-3 p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-primary/20 hover:border-primary/40 transition-all duration-300 hover:glow-subtle" 
           />
         </div>
 
         {/* Enhanced Search Bar */}
         <div className="relative max-w-md flex-1 hidden md:flex">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gold/70" />
           <Input
             type="search"
-            placeholder="Search tasks, departments..."
-            className="w-full pl-10 pr-4 py-2 glass border-primary/20 focus:border-primary/50 focus:glow-primary transition-all duration-300"
+            placeholder="Search cosmic workspace..."
+            className="w-full pl-12 pr-4 py-3 bg-background/20 backdrop-blur-sm border-primary/30 focus:border-gold/50 focus:ring-2 focus:ring-gold/20 rounded-xl text-white placeholder:text-white/50 glow-input transition-all duration-300"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
+          <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+            <kbd className="px-2 py-1 text-xs font-mono text-gold/60 bg-gold/10 rounded border border-gold/20">
+              ⌘K
+            </kbd>
+          </div>
         </div>
 
         {/* Enhanced Right Side Actions */}

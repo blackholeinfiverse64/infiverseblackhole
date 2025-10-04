@@ -47,123 +47,94 @@ export function DashboardSidebar() {
   }
 
   return (
-    <div className="h-screen flex flex-col bg-sidebar space-card border-r border-border/50 shadow-lg overflow-hidden">
-      {/* Enhanced Space Header */}
-      <div className="border-b border-border/50 bg-card/80 backdrop-blur-md relative overflow-hidden flex-shrink-0">
-        <div className="absolute inset-0 cosmic-grid opacity-20"></div>
-        <div className="flex items-center px-6 py-6 relative z-10">
-          <div className="flex items-center gap-4 font-bold text-2xl">
-            <div className="relative">
-              <div className="w-12 h-12 hero-gradient rounded-xl flex items-center justify-center glow-primary animate-float transform hover:scale-110 transition-all duration-300">
-                <Sparkles className="h-6 w-6 text-primary-foreground" />
-              </div>
+    <div className="h-full w-80 bg-background/20 backdrop-blur-xl border-r border-primary/20 glass-sidebar relative overflow-hidden">
+      {/* Sidebar background effects */}
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-background/10 to-accent/5 pointer-events-none"></div>
+      <div className="absolute inset-0 cosmic-grid opacity-10 pointer-events-none"></div>
+      
+      <div className="flex flex-col h-full relative z-10">
+        {/* Enhanced Header */}
+        <div className="flex items-center gap-3 p-6 border-b border-primary/20">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary via-accent to-primary p-0.5 glow-primary">
+            <div className="w-full h-full rounded-lg bg-background/90 flex items-center justify-center">
+              <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
             </div>
-            <span className="text-gradient-hero font-bold">
-              Infiverse
-            </span>
+          </div>
+          <div>
+            <h1 className="text-lg font-bold text-white glow-text">Infiverse</h1>
+            <p className="text-xs text-gold/80 font-medium">Cosmic Workspace</p>
           </div>
         </div>
-      </div>
 
-      {/* Enhanced Navigation */}
-      <div className="flex-1 overflow-y-auto space-scrollbar">
-        <div className="p-6">
-          <div className="mb-8">
-            <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">
+        {/* Enhanced Navigation */}
+        <nav className="flex-1 overflow-y-auto p-4 space-y-6">
+          {/* Main Navigation */}
+          <div className="space-y-1">
+            <h2 className="text-xs font-bold text-gold uppercase tracking-wider mb-3 px-3 glow-text-subtle">
               Navigation
-            </div>
-            <nav className="space-y-3">
-              {renderRoutes.map((route) => {
-                const isActive = location.pathname === route.href;
-                return (
-                  <Link
-                    key={route.href}
-                    to={route.href}
-                    className={`group flex items-center gap-4 px-5 py-4 rounded-2xl text-sm font-semibold transition-all duration-300 relative overflow-hidden ${
-                      isActive
-                        ? "space-button glow-primary"
-                        : "glass-card hover:glow-hover text-foreground/90"
-                    }`}
-                  >
-                    {/* Space Active indicator */}
-                    {isActive && (
-                      <div className="absolute inset-0 bg-white/10 rounded-2xl animate-pulse"></div>
-                    )}
-
-                    {/* Enhanced Icon */}
-                    <div className={`relative z-10 p-2 rounded-lg transition-all duration-300 ${
-                      isActive
-                        ? 'bg-primary-foreground/20 text-primary-foreground'
-                        : 'bg-primary/10 text-primary/80 group-hover:bg-primary/20 group-hover:text-primary'
-                    }`}>
-                      <route.icon className="h-5 w-5" />
-                    </div>
-
-                    {/* Text with space styling */}
-                    <span className="relative z-10 transition-all duration-300">
-                      {route.title}
-                    </span>
-
-                    {/* Space glow effect */}
-                    {isActive && (
-                      <div className="absolute right-4 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-primary-foreground rounded-full animate-pulse"></div>
-                    )}
-                  </Link>
-                );
-              })}
-            </nav>
+            </h2>
+            {renderRoutes.map((route) => {
+              const Icon = route.icon;
+              const active = location.pathname === route.href;
+              return (
+                <Link
+                  key={route.href}
+                  to={route.href}
+                  className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all duration-300 group relative overflow-hidden ${
+                    active
+                      ? "bg-gradient-to-r from-primary/20 to-accent/20 text-white shadow-lg glow-primary border border-primary/30"
+                      : "text-white/80 hover:text-white hover:bg-white/5 hover:glow-subtle"
+                  }`}
+                >
+                  {active && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 animate-pulse"></div>
+                  )}
+                  <Icon className={`w-5 h-5 transition-all duration-300 relative z-10 ${
+                    active ? "text-gold glow-icon" : "text-white/70 group-hover:text-gold"
+                  }`} />
+                  <span className="relative z-10 group-hover:text-gold transition-colors duration-300">{route.title}</span>
+                  {active && (
+                    <div className="absolute right-2 w-2 h-2 bg-gold rounded-full glow-dot animate-pulse"></div>
+                  )}
+                </Link>
+              );
+            })}
           </div>
+        </nav>
 
-          {/* Enhanced Workspace Section */}
-          <div className="mt-8">
-            <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">
-              Workspace
-            </div>
-            <div className="glass-card px-4 py-3 rounded-xl border border-primary/20">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 hero-gradient rounded-lg flex items-center justify-center glow-primary">
-                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                  </svg>
-                </div>
-                <div>
-                  <div className="text-sm font-semibold">Default Workspace</div>
-                  <div className="text-xs text-muted-foreground">Active</div>
-                </div>
-              </div>
-            </div>
+        {/* Enhanced Footer */}
+        <div className="p-4 border-t border-primary/20">
+          <div className="space-y-1 mb-4">
+            <Link
+              to="/settings"
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-300 group text-white/70 hover:text-white hover:bg-white/5"
+            >
+              <Settings className="w-4 h-4 transition-colors duration-300 group-hover:text-gold" />
+              <span className="group-hover:text-gold transition-colors duration-300">Settings</span>
+            </Link>
           </div>
-        </div>
-      </div>
-
-      {/* Enhanced Footer Section */}
-      <div className="border-t border-border/50 p-6 bg-gradient-to-r from-background to-primary/5 flex-shrink-0">
-        <div className="space-y-2">
-          <Link
-            to="/settings"
-            className="group flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium glass hover:glow-hover text-foreground/70 transition-all duration-300"
-          >
-            <Settings className="h-5 w-5 transition-colors duration-300" />
-            <span>Settings</span>
-          </Link>
-
-          {/* Enhanced User Profile Card */}
-          <div className="mt-4 p-4 rounded-xl glass-card border border-primary/20">
+          
+          {/* Enhanced User Profile & Logout */}
+          <div className="p-3 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 hero-gradient rounded-full flex items-center justify-center text-white font-semibold glow-primary animate-pulse">
-                {user?.name?.charAt(0) || "U"}
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-gold to-primary flex items-center justify-center glow-gold">
+                <span className="text-sm font-bold text-background">
+                  {user?.name?.charAt(0) || "U"}
+                </span>
               </div>
-              <div className="flex-1 min-w-0">
-                <div className="text-sm font-semibold truncate">{user?.name || "User"}</div>
-                <div className="text-xs text-muted-foreground truncate">{user?.role || "User"}</div>
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-white">{user?.name || "User"}</p>
+                <p className="text-xs text-gold/80">{user?.role || "Employee"}</p>
               </div>
             </div>
             <button
               onClick={logout}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-destructive/10 text-destructive hover:bg-destructive/20 transition-all duration-300 hover:glow-hover"
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-white/80 hover:text-white bg-red-500/20 hover:bg-red-500/30 rounded-lg transition-all duration-300 border border-red-500/30 hover:border-red-500/50 hover:glow-red"
             >
-              <LogOut className="h-4 w-4" />
-              <span>Sign Out</span>
+              <LogOut className="w-4 h-4" />
+              Sign Out
             </button>
           </div>
         </div>

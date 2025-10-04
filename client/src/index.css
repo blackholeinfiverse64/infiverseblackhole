@@ -12,9 +12,109 @@ html, body, #root {
   background-color: #0a0a0f !important;
 }
 
-/* Ensure all elements inherit dark theme */
-*, *::before, *::after {
-  color-scheme: dark;
+/* Enhanced Space Theme Styling */
+.text-gold {
+  color: #F59E0B;
+}
+
+.text-gold\/80 {
+  color: rgba(245, 158, 11, 0.8);
+}
+
+.glow-text {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(168, 85, 247, 0.3);
+}
+
+.glow-text-subtle {
+  text-shadow: 0 0 5px rgba(245, 158, 11, 0.3);
+}
+
+.glow-primary {
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.4), 0 0 40px rgba(168, 85, 247, 0.2);
+}
+
+.glow-gold {
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.4), 0 0 30px rgba(245, 158, 11, 0.2);
+}
+
+.glow-icon {
+  filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.6));
+}
+
+.glow-dot {
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.8), 0 0 16px rgba(245, 158, 11, 0.4);
+}
+
+.glow-subtle {
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1), 0 0 20px rgba(168, 85, 247, 0.1);
+}
+
+.glow-red {
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.4), 0 0 30px rgba(239, 68, 68, 0.2);
+}
+
+.glow-input {
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.2), 0 0 15px rgba(245, 158, 11, 0.1);
+}
+
+.glow-menu {
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.3), 0 0 60px rgba(168, 85, 247, 0.1);
+}
+
+.glass-sidebar {
+  background: rgba(10, 10, 15, 0.3);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.glass-header {
+  background: rgba(10, 10, 15, 0.1);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.bg-gold {
+  background-color: #F59E0B;
+}
+
+.border-gold\/20 {
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+.border-gold\/30 {
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.border-gold\/40 {
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.border-gold\/50 {
+  border-color: rgba(245, 158, 11, 0.5);
+}
+
+.border-gold\/60 {
+  border-color: rgba(245, 158, 11, 0.6);
+}
+
+.focus\\:border-gold\/50:focus {
+  border-color: rgba(245, 158, 11, 0.5);
+}
+
+.focus\\:ring-gold\/20:focus {
+  --tw-ring-color: rgba(245, 158, 11, 0.2);
+}
+
+.hover\\:border-gold\/40:hover {
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.hover\\:glow-gold:hover {
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.4), 0 0 30px rgba(245, 158, 11, 0.2);
+}
+
+.group-hover\\:text-gold:hover {
+  color: #F59E0B;
 }
 
 @layer base {
