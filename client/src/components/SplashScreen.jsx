@@ -33,22 +33,22 @@ export function SplashScreen({ onComplete }) {
 
   if (!isVisible) {
     return (
-      <div className="fixed inset-0 z-[9999] bg-background transition-opacity duration-500 opacity-0 pointer-events-none">
+      <div className="fixed inset-0 z-[9999] bg-black transition-opacity duration-500 opacity-0 pointer-events-none">
       </div>
     )
   }
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-background flex items-center justify-center overflow-hidden">
+    <div className="fixed inset-0 z-[9999] bg-black flex items-center justify-center overflow-hidden">
       {/* Enhanced Space Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-background to-slate-900"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900"></div>
       <div className="absolute inset-0 cosmic-grid opacity-15"></div>
       
       {/* Deep Space Nebula Effects */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/3 rounded-full blur-3xl animate-pulse" style={{animationDuration: '12s'}}></div>
-        <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-accent/3 rounded-full blur-3xl animate-pulse" style={{animationDuration: '15s', animationDelay: '3s'}}></div>
-        <div className="absolute top-1/2 right-1/5 w-64 h-64 bg-gold/2 rounded-full blur-3xl animate-pulse" style={{animationDuration: '18s', animationDelay: '6s'}}></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-900/5 rounded-full blur-3xl animate-pulse" style={{animationDuration: '12s'}}></div>
+        <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-indigo-800/5 rounded-full blur-3xl animate-pulse" style={{animationDuration: '15s', animationDelay: '3s'}}></div>
+        <div className="absolute top-1/2 right-1/5 w-64 h-64 bg-gray-700/3 rounded-full blur-3xl animate-pulse" style={{animationDuration: '18s', animationDelay: '6s'}}></div>
       </div>
 
       {/* Main Content */}
@@ -56,13 +56,13 @@ export function SplashScreen({ onComplete }) {
         {/* Blackhole Logo Image */}
         <div className="relative">
           {/* Outer Glow Ring */}
-          <div className="absolute inset-0 w-64 h-64 rounded-full bg-gradient-to-r from-gold/20 via-primary/20 to-accent/20 blur-3xl animate-pulse"></div>
+          <div className="absolute inset-0 w-64 h-64 rounded-full bg-gradient-to-r from-blue-500/10 via-white/10 to-gray-400/10 blur-3xl animate-pulse"></div>
           
           {/* Blackhole Image Container */}
           <div className="relative w-48 h-48 mx-auto">
             {/* Rotating Event Horizon Ring */}
-            <div className="absolute -inset-4 rounded-full border border-gold/30 animate-spin" style={{animationDuration: '10s'}}></div>
-            <div className="absolute -inset-6 rounded-full border border-primary/20 animate-spin" style={{animationDuration: '15s', animationDirection: 'reverse'}}></div>
+            <div className="absolute -inset-4 rounded-full border border-gray-400/30 animate-spin" style={{animationDuration: '10s'}}></div>
+            <div className="absolute -inset-6 rounded-full border border-white/20 animate-spin" style={{animationDuration: '15s', animationDirection: 'reverse'}}></div>
             
             {/* Blackhole Image */}
             <img 
@@ -73,8 +73,8 @@ export function SplashScreen({ onComplete }) {
             />
             
             {/* Gravitational Lensing Effects */}
-            <div className="absolute -inset-8 rounded-full border border-gold/15 animate-ping" style={{animationDuration: '2s'}}></div>
-            <div className="absolute -inset-10 rounded-full border border-primary/10 animate-ping" style={{animationDuration: '3s', animationDelay: '0.5s'}}></div>
+            <div className="absolute -inset-8 rounded-full border border-gray-300/15 animate-ping" style={{animationDuration: '2s'}}></div>
+            <div className="absolute -inset-10 rounded-full border border-white/10 animate-ping" style={{animationDuration: '3s', animationDelay: '0.5s'}}></div>
           </div>
         </div>
 
