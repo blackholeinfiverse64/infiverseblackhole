@@ -3,31 +3,18 @@ import blackholeLogo from "../assets/blackhole.png"
 
 export function SplashScreen({ onComplete }) {
   const [isVisible, setIsVisible] = useState(true)
-  const [progress, setProgress] = useState(0)
 
   useEffect(() => {
-    // Progress animation
-    const progressInterval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(progressInterval)
-          return 100
-        }
-        return prev + 1
-      })
-    }, 100) // 10 seconds total (100 steps * 100ms)
-
-    // Auto hide after 10 seconds
+    // Auto hide after 5 seconds
     const timer = setTimeout(() => {
       setIsVisible(false)
       setTimeout(() => {
         onComplete()
       }, 500) // Wait for fade out animation
-    }, 10000)
+    }, 5000)
 
     return () => {
       clearTimeout(timer)
-      clearInterval(progressInterval)
     }
   }, [onComplete])
 
@@ -85,26 +72,12 @@ export function SplashScreen({ onComplete }) {
             Infiverse
           </h1>
           <p className="text-xl text-white/70 font-medium tracking-wider">
-            Blackhole Edition
+            Blackhole Infiverse
           </p>
           <div className="flex items-center justify-center space-x-2 text-gold/60">
             <div className="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
-            <p className="text-sm font-mono tracking-widest">INITIALIZING COSMIC WORKSPACE</p>
+            
             <div className="w-2 h-2 bg-gold rounded-full animate-pulse" style={{animationDelay: '0.5s'}}></div>
-          </div>
-        </div>
-
-        {/* Progress Bar */}
-        <div className="w-full max-w-md space-y-2">
-          <div className="w-full bg-background/50 rounded-full h-2 backdrop-blur-sm border border-gold/20">
-            <div 
-              className="bg-gradient-to-r from-gold via-primary to-accent h-full rounded-full transition-all duration-100 ease-out glow-primary"
-              style={{ width: `${progress}%` }}
-            ></div>
-          </div>
-          <div className="flex justify-between text-xs text-white/50 font-mono">
-            <span>Loading...</span>
-            <span>{progress}%</span>
           </div>
         </div>
 
