@@ -3,57 +3,61 @@ import React from 'react'
 export function SpaceParticles({ count = 50, className = '' }) {
   const particles = Array.from({ length: count }, (_, i) => ({
     id: i,
-    size: Math.random() * 2 + 0.5, // Smaller white particles
+    size: Math.random() * 4 + 2, // Larger particles for better visibility
     centerX: Math.random() * 100, // Center point X for orbit
     centerY: Math.random() * 100, // Center point Y for orbit
     animationDelay: Math.random() * 20,
-    animationDuration: Math.random() * 25 + 20, // Varied speeds
-    orbitRadius: Math.random() * 200 + 30, // Varied orbit sizes
+    animationDuration: Math.random() * 20 + 10, // Faster for better visibility
+    orbitRadius: Math.random() * 100 + 30, // Smaller orbits for visibility
     rotationDirection: Math.random() > 0.5 ? 1 : -1, // Clockwise or counter-clockwise
   }))
 
   return (
     <>
-      {/* CSS for optimized diagonal movement */}
+      {/* CSS for circular revolving motion */}
       <style jsx>{`
-        @keyframes diagonal135 {
+        @keyframes revolve-clockwise {
           0% {
-            transform: translate3d(0, 0, 0);
+            transform: rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg);
           }
           100% {
-            transform: translate3d(200px, 200px, 0);
+            transform: rotate(360deg) translateX(var(--orbit-radius)) rotate(-360deg);
           }
         }
 
-        @keyframes diagonal135Reverse {
+        @keyframes revolve-counter-clockwise {
           0% {
-            transform: translate3d(200px, 200px, 0);
+            transform: rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg);
           }
           100% {
-            transform: translate3d(0, 0, 0);
+            transform: rotate(-360deg) translateX(var(--orbit-radius)) rotate(360deg);
           }
         }
         
         @keyframes white-particle-glow {
           0%, 100% {
-            opacity: 0.3;
+            opacity: 0.8;
+            transform: scale(1);
           }
           50% {
-            opacity: 0.7;
+            opacity: 1;
+            transform: scale(1.2);
           }
         }
 
-        .particle-diagonal {
+        .particle-revolve {
           will-change: transform;
-          animation: var(--diagonal-direction) var(--duration) linear infinite, white-particle-glow 3s ease-in-out infinite;
+          animation: var(--revolve-direction) var(--duration) linear infinite, white-particle-glow 1s ease-in-out infinite;
+          transform-origin: center;
+          filter: none; /* Remove any blur */
         }
 
-        .particle-diagonal-normal {
-          --diagonal-direction: diagonal135;
+        .particle-revolve-clockwise {
+          --revolve-direction: revolve-clockwise;
         }
 
-        .particle-diagonal-reverse {
-          --diagonal-direction: diagonal135Reverse;
+        .particle-revolve-counter {
+          --revolve-direction: revolve-counter-clockwise;
         }
       `}</style>
       
@@ -61,8 +65,8 @@ export function SpaceParticles({ count = 50, className = '' }) {
         {particles.map((particle) => (
           <div
             key={particle.id}
-            className={`absolute particle-diagonal ${
-              particle.rotationDirection > 0 ? 'particle-diagonal-normal' : 'particle-diagonal-reverse'
+            className={`absolute particle-revolve ${
+              particle.rotationDirection > 0 ? 'particle-revolve-clockwise' : 'particle-revolve-counter'
             } bg-white rounded-full`}
             style={{
               width: `${particle.size}px`,
@@ -70,12 +74,14 @@ export function SpaceParticles({ count = 50, className = '' }) {
               left: `${particle.centerX}%`,
               top: `${particle.centerY}%`,
               '--duration': `${particle.animationDuration}s`,
+              '--orbit-radius': `${particle.orbitRadius}px`,
               animationDelay: `${particle.animationDelay}s`,
               boxShadow: `
-                0 0 ${particle.size * 4}px rgba(255, 255, 255, 0.8),
-                0 0 ${particle.size * 8}px rgba(255, 255, 255, 0.4),
-                0 0 ${particle.size * 12}px rgba(255, 255, 255, 0.2)
+                0 0 ${particle.size}px rgba(255, 255, 255, 1),
+                0 0 ${particle.size * 2}px rgba(255, 255, 255, 0.8),
+                inset 0 0 ${particle.size}px rgba(255, 255, 255, 0.9)
               `,
+              border: '1px solid rgba(255, 255, 255, 0.9)',
             }}
           />
         ))}
