@@ -11,7 +11,7 @@ import { SplashScreen } from "./components/SplashScreen";
 import { AuthWrapper, HomeRedirect } from "./components/AuthWrapper";
 import Dashboard from "./pages/Dashboard";
 import Tasks from "./pages/Tasks";
-import Dependencies from "./pages/Dependencies";
+import { Dependencies } from "./pages/Dependencies";
 import Departments from "./pages/Departments";
 import Optimization from "./pages/Optimization";
 import Settings from "./pages/Settings";

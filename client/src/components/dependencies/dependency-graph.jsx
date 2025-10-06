@@ -161,7 +161,7 @@ export function DependencyGraph() {
     const boundedWidth = width - margin.left - margin.right
     const boundedHeight = height - margin.top - margin.bottom
 
-    svg.style("background", "#f9fafb")
+    svg.style("background", "transparent") // Make background transparent for cosmic theme
 
     const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`)
 
@@ -409,7 +409,7 @@ export function DependencyGraph() {
     const boundedWidth = width - margin.left - margin.right
     const boundedHeight = height - margin.top - margin.bottom
 
-    svg.style("background", "#f9fafb")
+    svg.style("background", "transparent") // Make background transparent for cosmic theme
 
     const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`)
 
@@ -588,8 +588,8 @@ export function DependencyGraph() {
     return (
       <div className="flex justify-center items-center h-full">
         <div className="flex flex-col items-center gap-2">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          <p>Loading dependency graph...</p>
+          <Loader2 className="h-8 w-8 animate-spin text-purple-400" />
+          <p className="text-white">Loading dependency graph...</p>
         </div>
       </div>
     )
@@ -598,9 +598,9 @@ export function DependencyGraph() {
   if (error) {
     return (
       <div className="flex justify-center items-center h-full">
-        <div className="text-center text-red-500">
-          <p>Error loading dependency graph: {error}</p>
-          <button className="mt-4 px-4 py-2 bg-primary text-white rounded-md" onClick={() => window.location.reload()}>
+        <div className="text-center">
+          <p className="text-red-400 mb-4">Error loading dependency graph: {error}</p>
+          <button className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors" onClick={() => window.location.reload()}>
             Try Again
           </button>
         </div>
@@ -614,18 +614,18 @@ export function DependencyGraph() {
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <div className="w-full sm:w-auto">
-              <label htmlFor="department" className="block text-sm font-medium mb-1">
+              <label htmlFor="department" className="block text-sm font-medium mb-1 text-white">
                 Department:
               </label>
               <select
                 id="department"
                 value={selectedDepartment}
                 onChange={(e) => setSelectedDepartment(e.target.value)}
-                className="w-full sm:w-auto border border-gray-300 rounded-md px-2 py-1 text-sm"
+                className="w-full sm:w-auto bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm focus:border-purple-400 focus:outline-none"
               >
-                <option value="All">All</option>
+                <option value="All" className="bg-slate-800">All</option>
                 {departments.map((dept) => (
-                  <option key={dept._id} value={dept.name}>
+                  <option key={dept._id} value={dept.name} className="bg-slate-800">
                     {dept.name}
                   </option>
                 ))}
@@ -634,16 +634,20 @@ export function DependencyGraph() {
             <div className="flex gap-2 w-full sm:w-auto">
               <button
                 onClick={() => setViewMode("graph")}
-                className={`flex-1 sm:flex-initial px-3 py-1 text-sm rounded-md ${
-                  viewMode === "graph" ? "bg-primary text-white" : "bg-gray-200"
+                className={`flex-1 sm:flex-initial px-4 py-2 text-sm rounded-lg transition-colors ${
+                  viewMode === "graph" 
+                    ? "bg-purple-500 text-white" 
+                    : "bg-slate-700/50 text-white hover:bg-slate-600"
                 }`}
               >
                 Graph
               </button>
               <button
                 onClick={() => setViewMode("gantt")}
-                className={`flex-1 sm:flex-initial px-3 py-1 text-sm rounded-md ${
-                  viewMode === "gantt" ? "bg-primary text-white" : "bg-gray-200"
+                className={`flex-1 sm:flex-initial px-4 py-2 text-sm rounded-lg transition-colors ${
+                  viewMode === "gantt" 
+                    ? "bg-purple-500 text-white" 
+                    : "bg-slate-700/50 text-white hover:bg-slate-600"
                 }`}
               >
                 Gantt
@@ -651,7 +655,7 @@ export function DependencyGraph() {
             </div>
           </div>
           <div ref={containerRef} className="w-full overflow-auto">
-            <svg ref={svgRef} className="w-full h-[400px] md:h-[600px] border border-gray-200 rounded-md" />
+            <svg ref={svgRef} className="w-full h-[400px] md:h-[600px] border border-slate-700 rounded-lg bg-slate-800/30" />
           </div>
         </div>
         <div className="mt-4">

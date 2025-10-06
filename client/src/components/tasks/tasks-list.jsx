@@ -18,9 +18,9 @@ import { useToast } from "../../hooks/use-toast"
 import { api } from "../../lib/api"
 import { useSocketContext } from "../../context/socket-context"
 
-export function TasksList({ filters, searchQuery, viewMode }) {
+export function TasksList({ filters = {}, searchQuery = "", viewMode = "table" }) {
   const { toast } = useToast()
-  const { events } = useSocketContext()
+  const { events } = useSocketContext() || { events: {} }
   const [tasks, setTasks] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -33,10 +33,19 @@ export function TasksList({ filters, searchQuery, viewMode }) {
     const fetchTasks = async () => {
       try {
         setIsLoading(true)
-        const data = await api.tasks.getTasks(filters)
-        setTasks(data)
         setError(null)
+        console.log('Fetching tasks with filters:', filters)
+        
+        const data = await api.tasks.getTasks(filters)
+        console.log('Tasks data received:', data)
+        
+        // Handle different response formats
+        const tasksArray = Array.isArray(data) ? data : (data.data || data.tasks || [])
+        setTasks(tasksArray)
+        
+        console.log('Tasks set in state:', tasksArray)
       } catch (err) {
+        console.error('Error fetching tasks:', err)
         setError(err.message || "Failed to load tasks")
         toast({
           title: "Error",
@@ -82,14 +91,16 @@ export function TasksList({ filters, searchQuery, viewMode }) {
 
   // Handle real-time updates
   useEffect(() => {
-    if (events.taskCreated || events.taskUpdated || events.taskDeleted) {
+    if (events && (events.taskCreated || events.taskUpdated || events.taskDeleted)) {
       // Refetch tasks when events occur
       const fetchTasks = async () => {
         try {
+          console.log('Refetching tasks due to real-time event')
           const data = await api.tasks.getTasks(filters)
-          setTasks(data)
-        } catch (err) {
-          console.error("Error refetching tasks:", err)
+          const tasksArray = Array.isArray(data) ? data : (data.data || data.tasks || [])
+          setTasks(tasksArray)
+        } catch (error) {
+          console.error("Error refetching tasks:", error)
         }
       }
       fetchTasks()
@@ -147,43 +158,6 @@ export function TasksList({ filters, searchQuery, viewMode }) {
     } finally {
       setIsDeleting(false)
     }
-  }
-
-  if (isLoading) {
-    return (
-      <Card className="glass-card border border-primary/20 bg-background/10 backdrop-blur-md">
-        <CardContent className="flex justify-center items-center py-16">
-          <div className="flex flex-col items-center gap-4">
-            <div className="relative">
-              <Loader2 className="h-12 w-12 animate-spin text-primary" />
-              <div className="absolute inset-0 h-12 w-12 rounded-full border-2 border-primary/20 animate-ping" />
-            </div>
-            <p className="text-white/80">Loading tasks...</p>
-          </div>
-        </CardContent>
-      </Card>
-    )
-  }
-
-  if (error) {
-    return (
-      <Card className="glass-card border border-destructive/20 bg-background/10 backdrop-blur-md">
-        <CardContent className="p-8 text-center">
-          <div className="text-destructive mb-4">
-            <AlertCircle className="h-12 w-12 mx-auto mb-2" />
-            <p className="text-lg font-semibold">Error loading tasks</p>
-            <p className="text-sm text-white/60">{error}</p>
-          </div>
-          <Button
-            variant="outline"
-            onClick={() => window.location.reload()}
-            className="border-primary/30 text-white hover:bg-primary/10"
-          >
-            Try Again
-          </Button>
-        </CardContent>
-      </Card>
-    )
   }
 
   // Card View Component
@@ -256,8 +230,42 @@ export function TasksList({ filters, searchQuery, viewMode }) {
 
   return (
     <div className="space-y-6">
+      {/* Debug info */}
+      <div className="text-xs text-white/50 p-2 bg-black/20 rounded">
+        Debug: Loading: {isLoading.toString()}, Error: {error || 'none'}, Tasks: {tasks.length}, Filtered: {filteredTasks.length}, Groups: {Object.keys(groupedTasks).length}
+      </div>
+      
       {/* Tasks Display */}
-      {Object.keys(groupedTasks).length === 0 ? (
+      {isLoading ? (
+        <Card className="glass-card border border-primary/20 bg-background/10 backdrop-blur-md">
+          <CardContent className="flex justify-center items-center py-16">
+            <div className="flex flex-col items-center gap-4">
+              <div className="relative">
+                <Loader2 className="h-12 w-12 animate-spin text-primary" />
+                <div className="absolute inset-0 h-12 w-12 rounded-full border-2 border-primary/20 animate-ping" />
+              </div>
+              <p className="text-white/80">Loading tasks...</p>
+            </div>
+          </CardContent>
+        </Card>
+      ) : error ? (
+        <Card className="glass-card border border-destructive/20 bg-background/10 backdrop-blur-md">
+          <CardContent className="p-8 text-center">
+            <div className="text-destructive mb-4">
+              <AlertCircle className="h-12 w-12 mx-auto mb-2" />
+              <p className="text-lg font-semibold">Error loading tasks</p>
+              <p className="text-sm text-white/60">{error}</p>
+            </div>
+            <Button
+              variant="outline"
+              onClick={() => window.location.reload()}
+              className="border-primary/30 text-white hover:bg-primary/10"
+            >
+              Try Again
+            </Button>
+          </CardContent>
+        </Card>
+      ) : Object.keys(groupedTasks).length === 0 ? (
         <Card className="glass-card border border-primary/20 bg-background/10 backdrop-blur-md">
           <CardContent className="text-center py-12">
             <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted/20 flex items-center justify-center">
