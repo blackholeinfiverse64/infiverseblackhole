@@ -11,20 +11,47 @@ function Tasks() {
     department: [],
     priority: undefined,
   })
+  const [viewMode, setViewMode] = useState("table") // table or cards
+  const [searchQuery, setSearchQuery] = useState("")
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters)
   }
 
+  const handleSearchChange = (query) => {
+    setSearchQuery(query)
+  }
+
+  const handleViewModeChange = (mode) => {
+    setViewMode(mode)
+  }
+
   return (
-    <div className="h-screen flex flex-col space-y-6 overflow-y-auto">
-      <TasksHeader />
-      <div className="flex flex-col md:flex-row gap-6 flex-1 px-4 md:px-6 pb-6">
-        <div className="md:w-1/4">
+    <div className="min-h-screen space-y-8 animate-fade-in relative">
+      {/* Space Background Elements */}
+      <div className="absolute inset-0 cosmic-grid opacity-10 pointer-events-none"></div>
+      
+      {/* Enhanced Tasks Header */}
+      <TasksHeader 
+        onSearchChange={handleSearchChange}
+        onViewModeChange={handleViewModeChange}
+        viewMode={viewMode}
+      />
+      
+      {/* Main Content Area */}
+      <div className="flex flex-col xl:flex-row gap-8 relative z-10">
+        {/* Enhanced Filters Sidebar */}
+        <div className="xl:w-80 flex-shrink-0">
           <TaskFilters onFilterChange={handleFilterChange} />
         </div>
-        <div className="flex-1">
-          <TasksList filters={filters} />
+        
+        {/* Tasks List Area */}
+        <div className="flex-1 min-w-0">
+          <TasksList 
+            filters={filters} 
+            searchQuery={searchQuery}
+            viewMode={viewMode}
+          />
         </div>
       </div>
     </div>

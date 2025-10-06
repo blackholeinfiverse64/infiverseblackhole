@@ -160,29 +160,37 @@ function Dashboard() {
       {/* Space Background Elements */}
       <div className="absolute inset-0 cosmic-grid opacity-10 pointer-events-none"></div>
       
-      {/* Enhanced Header Section */}
-      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 relative z-10">
-        <div className="space-y-2">
-          <h1 className="text-4xl font-bold tracking-tight text-gradient-hero animate-fade-in">
-            Dashboard
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            Welcome back! Here's an overview of your workflow.
-          </p>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-          <Button
-            onClick={() => setIsCreateTaskOpen(true)}
-            className="space-button glow-hover transition-all duration-300 transform hover:scale-105 group"
-          >
-            <Plus className="mr-2 h-5 w-5 transition-all duration-300 group-hover:rotate-90" />
-            Create New Task
-          </Button>
-          
-          {isAdmin && (
-            <>
+      {/* Conditional Rendering: Dashboard or Department Details */}
+      {selectedDepartment ? (
+        <DepartmentDetails 
+          department={selectedDepartment} 
+          onBack={handleBackToDashboard} 
+        />
+      ) : (
+        <>
+          {/* Enhanced Header Section */}
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 relative z-10">
+            <div className="space-y-2">
+              <h1 className="text-4xl font-bold tracking-tight text-gradient-hero animate-fade-in">
+                Dashboard
+              </h1>
+              <p className="text-lg text-muted-foreground">
+                Welcome back! Here's an overview of your workflow.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
               <Button
-                variant="outline"
+                onClick={() => setIsCreateTaskOpen(true)}
+                className="space-button glow-hover transition-all duration-300 transform hover:scale-105 group"
+              >
+                <Plus className="mr-2 h-5 w-5 transition-all duration-300 group-hover:rotate-90" />
+                Create New Task
+              </Button>
+              
+              {isAdmin && (
+                <>
+                  <Button
+                    variant="outline"
                 onClick={handleBroadcastReminders}
                 disabled={isSendingReminders}
                 className="glass-card hover:glow-hover transition-all duration-300"
@@ -370,6 +378,8 @@ function Dashboard() {
       </div>
 
       <CreateTaskDialog open={isCreateTaskOpen} onOpenChange={setIsCreateTaskOpen} />
+        </>
+      )}
     </div>
   )
 }

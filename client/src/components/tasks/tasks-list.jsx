@@ -5,173 +5,20 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../ui
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
-import { Input } from "../ui/input"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
-import { MoreHorizontal, Eye, Edit, Trash, Loader2, Search, X } from 'lucide-react'
+import { MoreHorizontal, Eye, Edit, Trash, Loader2, Target, AlertCircle, Users } from 'lucide-react'
 import { TaskDetailsDialog } from "./task-details-dialog"
 import { useToast } from "../../hooks/use-toast"
 import { api } from "../../lib/api"
 import { useSocketContext } from "../../context/socket-context"
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "../ui/dialog"
-import { Label } from "../ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
-import { Textarea } from "../ui/textarea"
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
-function EditTaskDialog({ task, open, onOpenChange }) {
-  // const { toast } = useToast()
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    status: "Pending",
-    priority: "Medium",
-    dueDate: "",
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  // Update formData when task prop changes
-  useEffect(() => {
-    if (task) {
-      setFormData({
-        title: task.title || "",
-        description: task.description || "",
-        status: task.status || "Pending",
-        priority: task.priority || "Medium",
-        dueDate: task.dueDate ? new Date(task.dueDate).toISOString().split("T")[0] : "",
-      })
-    }
-  }, [task])
-
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
-
-  const handleSelectChange = (name, value) => {
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      setIsSubmitting(true);
-      await api.tasks.updateTask(task._id, {
-        ...formData,
-        dueDate: formData.dueDate ? new Date(formData.dueDate).toISOString() : null,
-      });
-      toast.success("Task updated successfully");
-      onOpenChange(false);
-    } catch (error) {
-      console.error("Error updating task:", error);
-      toast.error(error.message || "Failed to update task");
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
-
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange} className="dialog-overlay">
-      <DialogContent className="dialog-content sm:max-w-[525px]">
-        <DialogHeader>
-          <DialogTitle>Edit Task</DialogTitle>
-        </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="title">Title</Label>
-              <Input
-                id="title"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="status">Status</Label>
-              <Select
-                value={formData.status}
-                onValueChange={(value) => handleSelectChange("status", value)}
-              >
-                <SelectTrigger className="bg-white border border-gray-300 rounded-md shadow-sm">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="z-[70]">
-                  <SelectItem value="Pending">Pending</SelectItem>
-                  <SelectItem value="In Progress">In Progress</SelectItem>
-                  <SelectItem value="Completed">Completed</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="priority">Priority</Label>
-              <Select
-                value={formData.priority}
-                onValueChange={(value) => handleSelectChange("priority", value)}
-              >
-                <SelectTrigger className="bg-white border border-gray-300 rounded-md shadow-sm">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="z-[70]">
-                  <SelectItem value="Low">Low</SelectItem>
-                  <SelectItem value="Medium">Medium</SelectItem>
-                  <SelectItem value="High">High</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="dueDate">Due Date</Label>
-              <Input
-                id="dueDate"
-                name="dueDate"
-                type="date"
-                value={formData.dueDate}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                "Save Changes"
-              )}
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
-  )
-}
-
-export function TasksList({ filters }) {
+export function TasksList({ filters, searchQuery, viewMode }) {
   const { toast } = useToast()
   const { events } = useSocketContext()
   const [tasks, setTasks] = useState([])
@@ -179,9 +26,7 @@ export function TasksList({ filters }) {
   const [error, setError] = useState(null)
   const [selectedTask, setSelectedTask] = useState(null)
   const [isDetailsOpen, setIsDetailsOpen] = useState(false)
-  const [isEditOpen, setIsEditOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
 
   // Fetch tasks based on filters
   useEffect(() => {
@@ -206,82 +51,74 @@ export function TasksList({ filters }) {
     fetchTasks()
   }, [filters, toast])
 
-  // Handle socket events for real-time updates
-  useEffect(() => {
-    if (events.length > 0) {
-      const latestEvent = events[events.length - 1]
-
-      // Apply filter checks for socket updates
-      const matchesFilters = (task) => {
-        const { status, department, priority } = filters
-        return (
-          (!status?.length || status.includes(task.status)) &&
-          (!department?.length || department.includes(task.department?._id)) &&
-          (!priority || priority === "all" || task.priority === priority)
-        )
-      }
-
-      if (latestEvent.type === "task-created" && matchesFilters(latestEvent.data)) {
-        setTasks((prev) => [...prev, latestEvent.data])
-      } else if (latestEvent.type === "task-updated") {
-        setTasks((prev) =>
-          prev
-            .map((task) => (task._id === latestEvent.data._id ? latestEvent.data : task))
-            .filter(matchesFilters)
-        )
-      } else if (latestEvent.type === "task-deleted") {
-        setTasks((prev) => prev.filter((task) => task._id !== latestEvent.data._id))
-      }
-    }
-  }, [events, filters])
-
   // Filter tasks based on search query
   const filteredTasks = useMemo(() => {
-    if (!searchQuery.trim()) {
-      return tasks
-    }
+    if (!searchQuery) return tasks
 
-    const query = searchQuery.toLowerCase().trim()
-    return tasks.filter((task) => {
-      // Search in task title
-      const titleMatch = task.title?.toLowerCase().includes(query)
-      
-      // Search in assignee name
-      const assigneeMatch = task.assignee?.name?.toLowerCase().includes(query)
-      
-      // Search in department name
-      const departmentMatch = task.department?.name?.toLowerCase().includes(query)
-      
-      // Search in task description
-      const descriptionMatch = task.description?.toLowerCase().includes(query)
-
-      return titleMatch || assigneeMatch || departmentMatch || descriptionMatch
+    return tasks.filter(task => {
+      const searchLower = searchQuery.toLowerCase()
+      return (
+        task.title?.toLowerCase().includes(searchLower) ||
+        task.description?.toLowerCase().includes(searchLower) ||
+        task.assignee?.name?.toLowerCase().includes(searchLower) ||
+        task.assignee?.department?.name?.toLowerCase().includes(searchLower) ||
+        task.status?.toLowerCase().includes(searchLower) ||
+        task.priority?.toLowerCase().includes(searchLower)
+      )
     })
   }, [tasks, searchQuery])
+
+  // Group tasks by department for display
+  const groupedTasks = useMemo(() => {
+    return filteredTasks.reduce((acc, task) => {
+      const deptName = task.assignee?.department?.name || "Unassigned"
+      if (!acc[deptName]) {
+        acc[deptName] = []
+      }
+      acc[deptName].push(task)
+      return acc
+    }, {})
+  }, [filteredTasks])
+
+  // Handle real-time updates
+  useEffect(() => {
+    if (events.taskCreated || events.taskUpdated || events.taskDeleted) {
+      // Refetch tasks when events occur
+      const fetchTasks = async () => {
+        try {
+          const data = await api.tasks.getTasks(filters)
+          setTasks(data)
+        } catch (err) {
+          console.error("Error refetching tasks:", err)
+        }
+      }
+      fetchTasks()
+    }
+  }, [events, filters])
 
   const getStatusColor = (status) => {
     switch (status) {
       case "Completed":
-        return "bg-green-500/10 text-green-500 hover:bg-green-500/20"
+        return "bg-green-500/20 text-green-400 border-green-500/30"
       case "In Progress":
-        return "bg-blue-500/10 text-blue-500 hover:bg-blue-500/20"
+        return "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
       case "Pending":
-        return "bg-amber-500/10 text-amber-500 hover:bg-amber-500/20"
+        return "bg-red-500/20 text-red-400 border-red-500/30"
       default:
-        return "bg-gray-500/10 text-gray-500 hover:bg-gray-500/20"
+        return "bg-gray-500/20 text-gray-400 border-gray-500/30"
     }
   }
 
   const getPriorityColor = (priority) => {
     switch (priority) {
       case "High":
-        return "bg-red-500/10 text-red-500 hover:bg-red-500/20"
+        return "bg-red-500/20 text-red-400 border-red-500/30"
       case "Medium":
-        return "bg-amber-500/10 text-amber-500 hover:bg-amber-500/20"
+        return "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
       case "Low":
-        return "bg-green-500/10 text-green-500 hover:bg-green-500/20"
+        return "bg-green-500/20 text-green-400 border-green-500/30"
       default:
-        return "bg-gray-500/10 text-gray-500 hover:bg-gray-500/20"
+        return "bg-gray-500/20 text-gray-400 border-gray-500/30"
     }
   }
 
@@ -290,51 +127,38 @@ export function TasksList({ filters }) {
     setIsDetailsOpen(true)
   }
 
-  const handleEditTask = (task) => {
-    setSelectedTask(task)
-    setIsEditOpen(true)
-  }
-
   const handleDeleteTask = async (taskId) => {
-    if (confirm("Are you sure you want to delete this task?")) {
-      try {
-        setIsDeleting(true);
-        await api.tasks.deleteTask(taskId);
-        toast.success("Task deleted successfully");
-      } catch (error) {
-        console.error("Error deleting task:", error);
-        toast.error(error.message || "Failed to delete task");
-      } finally {
-        setIsDeleting(false);
-      }
+    if (!confirm("Are you sure you want to delete this task?")) return
+
+    try {
+      setIsDeleting(true)
+      await api.tasks.deleteTask(taskId)
+      setTasks(prev => prev.filter(task => task._id !== taskId))
+      toast({
+        title: "Success",
+        description: "Task deleted successfully",
+      })
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: "Failed to delete task",
+        variant: "destructive",
+      })
+    } finally {
+      setIsDeleting(false)
     }
   }
-
-  const clearSearch = () => {
-    setSearchQuery("")
-  }
-
-  // Group filtered tasks by department
-  const groupedTasks = filteredTasks.reduce((acc, task) => {
-    const deptName = task.department?.name || "Unknown"
-    if (!acc[deptName]) {
-      acc[deptName] = []
-    }
-    acc[deptName].push(task)
-    return acc
-  }, {})
 
   if (isLoading) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Tasks by Department</CardTitle>
-          <CardDescription>View tasks grouped by department</CardDescription>
-        </CardHeader>
-        <CardContent className="flex justify-center items-center py-10">
-          <div className="flex flex-col items-center gap-2">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <p>Loading tasks...</p>
+      <Card className="glass-card border border-primary/20 bg-background/10 backdrop-blur-md">
+        <CardContent className="flex justify-center items-center py-16">
+          <div className="flex flex-col items-center gap-4">
+            <div className="relative">
+              <Loader2 className="h-12 w-12 animate-spin text-primary" />
+              <div className="absolute inset-0 h-12 w-12 rounded-full border-2 border-primary/20 animate-ping" />
+            </div>
+            <p className="text-white/80">Loading tasks...</p>
           </div>
         </CardContent>
       </Card>
@@ -343,193 +167,215 @@ export function TasksList({ filters }) {
 
   if (error) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Tasks by Department</CardTitle>
-          <CardDescription>View tasks grouped by department</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="p-4 text-center text-red-500">
-            <p>Error loading tasks: {error}</p>
-            <Button
-              variant="outline"
-              className="mt-4"
-              onClick={() => window.location.reload()}
-            >
-              Try Again
-            </Button>
+      <Card className="glass-card border border-destructive/20 bg-background/10 backdrop-blur-md">
+        <CardContent className="p-8 text-center">
+          <div className="text-destructive mb-4">
+            <AlertCircle className="h-12 w-12 mx-auto mb-2" />
+            <p className="text-lg font-semibold">Error loading tasks</p>
+            <p className="text-sm text-white/60">{error}</p>
           </div>
+          <Button
+            variant="outline"
+            onClick={() => window.location.reload()}
+            className="border-primary/30 text-white hover:bg-primary/10"
+          >
+            Try Again
+          </Button>
         </CardContent>
       </Card>
     )
   }
 
+  // Card View Component
+  const TaskCard = ({ task }) => (
+    <Card className="glass-card border border-white/10 bg-background/10 backdrop-blur-sm hover:border-primary/30 transition-all duration-300 group">
+      <CardContent className="p-6">
+        <div className="space-y-4">
+          {/* Header */}
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <h3 className="font-semibold text-white group-hover:text-primary transition-colors duration-300">
+                {task.title}
+              </h3>
+              <p className="text-sm text-white/60 mt-1 line-clamp-2">
+                {task.description || "No description provided"}
+              </p>
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-white/70 hover:text-white">
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="glass-card border border-primary/20 bg-background/90 backdrop-blur-md">
+                <DropdownMenuItem onClick={() => handleViewTask(task)} className="text-white hover:bg-primary/10">
+                  <Eye className="mr-2 h-4 w-4" />
+                  View details
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="bg-white/10" />
+                <DropdownMenuItem 
+                  onClick={() => handleDeleteTask(task._id)}
+                  className="text-red-400 hover:bg-red-500/10"
+                  disabled={isDeleting}
+                >
+                  <Trash className="mr-2 h-4 w-4" />
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+
+          {/* Status and Priority Badges */}
+          <div className="flex items-center gap-2">
+            <Badge className={getStatusColor(task.status)}>
+              {task.status}
+            </Badge>
+            <Badge className={getPriorityColor(task.priority)}>
+              {task.priority}
+            </Badge>
+          </div>
+
+          {/* Assignee and Due Date */}
+          <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center gap-2 text-white/70">
+              <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                <span className="text-xs font-bold text-white">
+                  {task.assignee?.name?.charAt(0) || "U"}
+                </span>
+              </div>
+              <span>{task.assignee?.name || "Unassigned"}</span>
+            </div>
+            <div className="text-white/60">
+              {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : "No due date"}
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+
   return (
     <div className="space-y-6">
-      {/* Search Bar */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Search Tasks</CardTitle>
-          <CardDescription>Search by task name, assignee, department, or description</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              placeholder="Search tasks by name, user, department, or description..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-10"
-            />
-            {searchQuery && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={clearSearch}
-                className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 hover:bg-gray-100"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
-          {searchQuery && (
-            <div className="mt-2 text-sm text-muted-foreground">
-              Found {filteredTasks.length} task{filteredTasks.length !== 1 ? 's' : ''} matching "{searchQuery}"
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Tasks List */}
+      {/* Tasks Display */}
       {Object.keys(groupedTasks).length === 0 ? (
-        <Card>
-          <CardContent className="text-center py-8 text-muted-foreground">
-            {searchQuery ? (
-              <div>
-                <p>No tasks found matching your search criteria.</p>
-                <Button variant="outline" onClick={clearSearch} className="mt-2">
-                  Clear search
-                </Button>
-              </div>
-            ) : (
-              <p>No tasks found matching the selected filters.</p>
-            )}
+        <Card className="glass-card border border-primary/20 bg-background/10 backdrop-blur-md">
+          <CardContent className="text-center py-12">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted/20 flex items-center justify-center">
+              <Target className="h-8 w-8 text-muted-foreground" />
+            </div>
+            <p className="text-white/60 mb-2">
+              {searchQuery ? "No tasks found matching your search criteria" : "No tasks found matching the selected filters"}
+            </p>
+            <p className="text-xs text-white/40">
+              {searchQuery ? "Try adjusting your search terms" : "Try changing your filter settings"}
+            </p>
           </CardContent>
         </Card>
       ) : (
         Object.entries(groupedTasks).map(([deptName, deptTasks]) => (
-          <Card key={deptName}>
+          <Card key={deptName} className="glass-card border border-primary/20 bg-background/10 backdrop-blur-md">
             <CardHeader>
-              <CardTitle>
-                {deptName} Tasks 
-                <Badge variant="secondary" className="ml-2">
-                  {deptTasks.length}
-                </Badge>
-              </CardTitle>
-              <CardDescription>Tasks assigned to the {deptName} department</CardDescription>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-white flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-primary/20 border border-primary/30">
+                      <Users className="h-5 w-5 text-primary" />
+                    </div>
+                    {deptName} Tasks
+                    <Badge className="bg-primary/20 text-primary border-primary/30">
+                      {deptTasks.length}
+                    </Badge>
+                  </CardTitle>
+                  <CardDescription className="text-white/70">
+                    Tasks assigned to the {deptName} department
+                  </CardDescription>
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Title</TableHead>
-                      <TableHead>Assignee</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Priority</TableHead>
-                      <TableHead>Due Date</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {deptTasks.map((task) => (
-                      <TableRow key={task._id}>
-                        <TableCell>
-                          <div>
-                            <div className="font-medium">{task.title}</div>
-                            {task.description && (
-                              <div className="text-sm text-muted-foreground truncate max-w-xs">
-                                {task.description}
-                              </div>
-                            )}
-                          </div>
-                        </TableCell>
-                        <TableCell>{task.assignee?.name || "Unassigned"}</TableCell>
-                        <TableCell>
-                          <Badge className={getStatusColor(task.status)}>{task.status}</Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Badge className={getPriorityColor(task.priority)}>{task.priority}</Badge>
-                        </TableCell>
-                        <TableCell>
-                          {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : "No date"}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <MoreHorizontal className="h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent
-                              align="end"
-                              className="bg-white border border-gray-200 shadow-lg rounded-md"
-                            >
-                              <DropdownMenuLabel className="font-medium text-gray-900">
-                                Actions
-                              </DropdownMenuLabel>
-                              <DropdownMenuItem
-                                onClick={() => handleViewTask(task)}
-                                className="text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                              >
-                                <Eye className="mr-2 h-4 w-4" />
-                                View details
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                onClick={() => handleEditTask(task)}
-                                className="text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                              >
-                                <Edit className="mr-2 h-4 w-4" />
-                                Edit task
-                              </DropdownMenuItem>
-                              <DropdownMenuSeparator className="bg-gray-200" />
-                              <DropdownMenuItem
-                                className="text-red-600 hover:bg-red-50 hover:text-red-700"
-                                onClick={() => handleDeleteTask(task._id)}
-                                disabled={isDeleting}
-                              >
-                                <Trash className="mr-2 h-4 w-4" />
-                                Delete task
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </TableCell>
+              {viewMode === "cards" ? (
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  {deptTasks.map((task) => (
+                    <TaskCard key={task._id} task={task} />
+                  ))}
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="border-white/10 hover:bg-white/5">
+                        <TableHead className="text-white/80">Title</TableHead>
+                        <TableHead className="text-white/80">Assignee</TableHead>
+                        <TableHead className="text-white/80">Status</TableHead>
+                        <TableHead className="text-white/80">Priority</TableHead>
+                        <TableHead className="text-white/80">Due Date</TableHead>
+                        <TableHead className="text-right text-white/80">Actions</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+                    </TableHeader>
+                    <TableBody>
+                      {deptTasks.map((task) => (
+                        <TableRow key={task._id} className="border-white/10 hover:bg-white/5 transition-colors duration-300">
+                          <TableCell>
+                            <div>
+                              <div className="font-medium text-white">{task.title}</div>
+                              {task.description && (
+                                <div className="text-sm text-white/60 truncate max-w-xs">
+                                  {task.description}
+                                </div>
+                              )}
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-white/80">{task.assignee?.name || "Unassigned"}</TableCell>
+                          <TableCell>
+                            <Badge className={getStatusColor(task.status)}>{task.status}</Badge>
+                          </TableCell>
+                          <TableCell>
+                            <Badge className={getPriorityColor(task.priority)}>{task.priority}</Badge>
+                          </TableCell>
+                          <TableCell className="text-white/80">
+                            {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : "No date"}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" className="h-8 w-8 p-0 text-white/70 hover:text-white">
+                                  <MoreHorizontal className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end" className="glass-card border border-primary/20 bg-background/90 backdrop-blur-md">
+                                <DropdownMenuItem onClick={() => handleViewTask(task)} className="text-white hover:bg-primary/10">
+                                  <Eye className="mr-2 h-4 w-4" />
+                                  View details
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator className="bg-white/10" />
+                                <DropdownMenuItem 
+                                  onClick={() => handleDeleteTask(task._id)}
+                                  className="text-red-400 hover:bg-red-500/10"
+                                  disabled={isDeleting}
+                                >
+                                  <Trash className="mr-2 h-4 w-4" />
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
             </CardContent>
           </Card>
         ))
       )}
-      {selectedTask && (
-        <>
-          <TaskDetailsDialog
-            task={selectedTask}
-            open={isDetailsOpen}
-            onOpenChange={setIsDetailsOpen}
-          />
-          <EditTaskDialog
-            task={selectedTask}
-            open={isEditOpen}
-            onOpenChange={setIsEditOpen}
-          />
-        </>
-      )}
+
+      {/* Dialogs */}
+      <TaskDetailsDialog
+        task={selectedTask}
+        open={isDetailsOpen}
+        onOpenChange={setIsDetailsOpen}
+      />
     </div>
   )
 }
-
-<ToastContainer />
