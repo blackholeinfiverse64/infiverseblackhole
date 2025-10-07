@@ -17,6 +17,10 @@ import {
   Bell,
   ChevronLeft,
   ChevronRight,
+  Rocket,
+  Target,
+  BarChart3,
+  TrendingUp
 } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { useToast } from "../hooks/use-toast"
@@ -39,6 +43,8 @@ import { SubmissionFeedbackCard } from "../components/dashboard/SubmissionFeedba
 import { DashboardProvider } from "../context/DashboardContext" // New import
 import { api } from "@/lib/api"
 import { WorkHoursManager } from "../components/monitoring/WorkHoursManager"
+import SpaceParticles from "../components/optimization/SpaceParticles"
+import CosmicOrbs from "../components/optimization/CosmicOrbs"
 
 function UserDashboard() {
   const navigate = useNavigate()
@@ -269,10 +275,20 @@ function UserDashboard() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-[80vh]">
-        <div className="flex flex-col items-center gap-2">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          <p>Loading your dashboard...</p>
+      <div className="min-h-screen bg-transparent relative overflow-hidden">
+        {/* Space Background */}
+        <div className="fixed inset-0 z-0">
+          <SpaceParticles />
+          <CosmicOrbs />
+        </div>
+        
+        {/* Loading Content */}
+        <div className="relative z-10 flex items-center justify-center h-screen">
+          <div className="flex flex-col items-center gap-4 bg-white/10 border border-blue-300/30 backdrop-blur-sm rounded-lg p-8">
+            <Loader2 className="h-12 w-12 animate-spin text-blue-400" />
+            <p className="text-lg text-blue-100">Initializing Dashboard...</p>
+            <p className="text-sm text-blue-200/70">Loading your data</p>
+          </div>
         </div>
       </div>
     )
@@ -284,505 +300,584 @@ function UserDashboard() {
       hasNewReviews={hasNewReviews}
       markReviewsAsSeen={markReviewsAsSeen}
     >
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">My Dashboard</h1>
-            <p className="text-muted-foreground">Welcome back, {user?.name || "User"}! Here's your task overview.</p>
-          </div>
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={fetchUserDashboardData}>
-              <RefreshCw className="mr-2 h-4 w-4" />
-              Refresh
-            </Button>
-          </div>
+      <div className="min-h-screen bg-transparent relative overflow-hidden">
+        {/* Space Background */}
+        <div className="fixed inset-0 z-0">
+          <SpaceParticles />
+          <CosmicOrbs />
         </div>
 
-        {hasNewReviews && (
-          <Alert className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
-            <Bell className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-            <AlertTitle className="text-blue-800 dark:text-blue-300">New submission reviews</AlertTitle>
-            <AlertDescription className="text-blue-700 dark:text-blue-400">
-              You have {recentReviews.length} recently reviewed submission{recentReviews.length !== 1 ? "s" : ""}. Check
-              the "My Submissions" tab for details.
-              <Button
-                variant="link"
-                className="text-blue-700 dark:text-blue-400 p-0 h-auto font-normal ml-2"
-                onClick={markReviewsAsSeen}
+        {/* Content */}
+        <div className="relative z-10 p-6 space-y-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-blue-300 via-purple-300 to-cyan-300 bg-clip-text text-transparent flex items-center gap-3">
+                <Rocket className="h-8 w-8 text-blue-400" />
+                Dashboard
+              </h1>
+              <p className="text-lg text-blue-200/80 mt-2">Welcome back, Commander {user?.name || "Agent"}! Here's your overview.</p>
+            </div>
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                onClick={fetchUserDashboardData}
+                className="bg-white/10 border-blue-300/30 text-blue-100 hover:bg-blue-400/20 backdrop-blur-sm"
               >
-                Mark as read
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Sync Status
               </Button>
-            </AlertDescription>
-          </Alert>
-        )}
+            </div>
+          </div>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">My Tasks</CardTitle>
-              <div className="h-4 w-4 text-muted-foreground">
-                <Clock className="h-4 w-4" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{userStats.totalTasks}</div>
-              <p className="text-xs text-muted-foreground">Total assigned tasks</p>
-            </CardContent>
-          </Card>
+          {hasNewReviews && (
+            <Alert className="bg-cyan-400/20 border-cyan-300/30 backdrop-blur-sm">
+              <Bell className="h-4 w-4 text-cyan-300" />
+              <AlertTitle className="text-cyan-100">New Reviews Available</AlertTitle>
+              <AlertDescription className="text-cyan-200/80">
+                You have {recentReviews.length} submission review{recentReviews.length !== 1 ? "s" : ""} from reviewers. Check
+                the "My Submissions" tab for details.
+                <Button
+                  variant="link"
+                  className="text-cyan-200 hover:text-cyan-100 p-0 h-auto font-normal ml-2"
+                  onClick={markReviewsAsSeen}
+                >
+                  Mark as processed
+                </Button>
+              </AlertDescription>
+            </Alert>
+          )}
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Completed</CardTitle>
-              <div className="h-4 w-4 text-muted-foreground">
-                <CheckCircle className="h-4 w-4" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{userStats.completedTasks}</div>
-              <p className="text-xs text-muted-foreground">{userStats.completionRate}% completion rate</p>
-            </CardContent>
-          </Card>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <Card className="bg-white/10 border-blue-300/30 backdrop-blur-sm hover:bg-white/20 transition-all duration-300">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-blue-100">Active Tasks</CardTitle>
+                <div className="h-4 w-4 text-blue-300">
+                  <Target className="h-4 w-4" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-white">{userStats.totalTasks}</div>
+                <p className="text-xs text-blue-200/60">Total assigned tasks</p>
+              </CardContent>
+            </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">In Progress</CardTitle>
-              <div className="h-4 w-4 text-muted-foreground">
-                <Clock className="h-4 w-4" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{userStats.inProgressTasks}</div>
-              <p className="text-xs text-muted-foreground">Tasks currently in progress</p>
-            </CardContent>
-          </Card>
+            <Card className="bg-white/10 border-green-300/30 backdrop-blur-sm hover:bg-white/20 transition-all duration-300">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-green-100">Completed</CardTitle>
+                <div className="h-4 w-4 text-green-300">
+                  <CheckCircle className="h-4 w-4" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-white">{userStats.completedTasks}</div>
+                <p className="text-xs text-green-200/60">{userStats.completionRate}% success rate</p>
+              </CardContent>
+            </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Pending</CardTitle>
-              <div className="h-4 w-4 text-muted-foreground">
-                <AlertCircle className="h-4 w-4" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{userStats.pendingTasks}</div>
-              <p className="text-xs text-muted-foreground">Tasks waiting to be started</p>
-            </CardContent>
-          </Card>
-        </div>
+            <Card className="bg-white/10 border-amber-300/30 backdrop-blur-sm hover:bg-white/20 transition-all duration-300">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-amber-100">In Progress</CardTitle>
+                <div className="h-4 w-4 text-amber-300">
+                  <BarChart3 className="h-4 w-4" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-white">{userStats.inProgressTasks}</div>
+                <p className="text-xs text-amber-200/60">Tasks in progress</p>
+              </CardContent>
+            </Card>
 
-        {/* Work Hours Manager */}
-        <WorkHoursManager />
+            <Card className="bg-white/10 border-purple-300/30 backdrop-blur-sm hover:bg-white/20 transition-all duration-300">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-purple-100">Awaiting</CardTitle>
+                <div className="h-4 w-4 text-purple-300">
+                  <Clock className="h-4 w-4" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-white">{userStats.pendingTasks}</div>
+                <p className="text-xs text-purple-200/60">Tasks pending</p>
+              </CardContent>
+            </Card>
+          </div>
 
-        <Tabs defaultValue="tasks" className="w-full">
-          <TabsList className="grid w-full max-w-md grid-cols-2 mx-auto">
-            <TabsTrigger value="tasks">My Tasks</TabsTrigger>
-            <TabsTrigger value="submissions" className="relative">
-              My Submissions
-              {hasNewReviews && (
-                <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
-                </span>
-              )}
-            </TabsTrigger>
-          </TabsList>
+          {/* Work Hours Manager */}
+          <div className="bg-white/10 border-blue-300/30 backdrop-blur-sm rounded-lg p-1">
+            <WorkHoursManager />
+          </div>
 
-          <TabsContent value="tasks" className="mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card className="md:col-span-2">
-                <CardHeader>
-                  <CardTitle>My Tasks</CardTitle>
-                  <CardDescription>View and manage your assigned tasks</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {userTasks?.length === 0 ? (
-                    <div className="text-center py-8 text-muted-foreground">
-                      <p>You don't have any tasks assigned yet.</p>
-                      <Button variant="outline" className="mt-4" onClick={() => setIsCreateTaskOpen(true)}>
-                        Create Your First Task
-                      </Button>
-                    </div>
-                  ) : (
-                    <div>
-                      <div className="overflow-x-auto">
-                        <Table>
-                          <TableHeader>
-                            <TableRow>
-                              <TableHead>Title</TableHead>
-                              <TableHead>Status</TableHead>
-                              <TableHead>Priority</TableHead>
-                              <TableHead>Due Date</TableHead>
-                            </TableRow>
-                          </TableHeader>
-                          <TableBody>
-                            {userTasks
-                              .slice(currentPage * TASKS_PER_PAGE, (currentPage + 1) * TASKS_PER_PAGE)
-                              .map((task) => (
-                                <TableRow
-                                  key={task._id}
-                                  className="cursor-pointer hover:bg-muted/50"
-                                  onClick={() => navigate(`/tasks/${task._id}`)}
-                                >
-                                  <TableCell className="font-medium">{task.title}</TableCell>
-                                  <TableCell>
-                                    <Badge className={getStatusColor(task.status)}>{task.status}</Badge>
-                                  </TableCell>
-                                  <TableCell>
-                                    <Badge className={getPriorityColor(task.priority)}>{task.priority}</Badge>
-                                  </TableCell>
-                                  <TableCell>
-                                    {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : "No date"}
-                                  </TableCell>
-                                </TableRow>
-                              ))}
-                          </TableBody>
-                        </Table>
-                      </div>
-                      {userTasks.length > TASKS_PER_PAGE && (
-                        <div className="flex justify-between mt-4">
-                          <Button variant="outline" size="sm" onClick={handlePrevPage} disabled={currentPage === 0}>
-                            <ChevronLeft className="h-4 w-4 mr-2" />
-                            Previous
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={handleNextPage}
-                            disabled={(currentPage + 1) * TASKS_PER_PAGE >= userTasks.length}
-                          >
-                            Next
-                            <ChevronRight className="h-4 w-4 ml-2" />
-                          </Button>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+          <Tabs defaultValue="tasks" className="w-full">
+            <TabsList className="grid w-full max-w-md grid-cols-2 mx-auto bg-white/10 backdrop-blur-sm border-blue-300/30">
+              <TabsTrigger 
+                value="tasks" 
+                className="data-[state=active]:bg-blue-400/30 data-[state=active]:text-blue-100 text-blue-200/70"
+              >
+                My Tasks
+              </TabsTrigger>
+              <TabsTrigger 
+                value="submissions" 
+                className="relative data-[state=active]:bg-blue-400/30 data-[state=active]:text-blue-100 text-blue-200/70"
+              >
+                My Submissions
+                {hasNewReviews && (
+                  <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
+                  </span>
+                )}
+              </TabsTrigger>
+            </TabsList>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Upcoming Deadlines</CardTitle>
-                  <CardDescription>Tasks due soon</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {userStats.upcomingDeadlines && userStats.upcomingDeadlines.length > 0 ? (
-                    <div className="space-y-4">
-                      {userStats.upcomingDeadlines.map((task) => (
-                        <div
-                          key={task.id}
-                          className="flex items-center justify-between p-3 rounded-md bg-muted/50 cursor-pointer hover:bg-muted"
-                          onClick={() => navigate(`/tasks/${task.id}`)}
+            <TabsContent value="tasks" className="mt-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <Card className="md:col-span-2 bg-white/10 border-blue-300/30 backdrop-blur-sm">
+                  <CardHeader>
+                    <CardTitle className="text-blue-100 flex items-center gap-2">
+                      <Target className="h-5 w-5 text-blue-300" />
+                      Active Tasks
+                    </CardTitle>
+                    <CardDescription className="text-blue-200/70">View and manage your assigned tasks</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {userTasks?.length === 0 ? (
+                      <div className="text-center py-8 text-blue-200/70">
+                        <Target className="mx-auto h-12 w-12 text-blue-300/60 mb-4" />
+                        <p>No active tasks assigned yet.</p>
+                        <Button 
+                          variant="outline" 
+                          className="mt-4 bg-blue-400/20 border-blue-300/30 text-blue-100 hover:bg-blue-400/30" 
+                          onClick={() => setIsCreateTaskOpen(true)}
                         >
-                          <div>
-                            <p className="font-medium text-sm">{task.title}</p>
-                            <p className="text-xs text-muted-foreground">
-                              Due: {new Date(task.dueDate).toLocaleDateString()}
-                            </p>
-                          </div>
-                          <Badge className={getPriorityColor(task.priority)}>{task.priority}</Badge>
+                          Request Task Assignment
+                        </Button>
+                      </div>
+                    ) : (
+                      <div>
+                        <div className="overflow-x-auto scrollbar-hide">
+                          <Table>
+                            <TableHeader>
+                              <TableRow className="border-blue-300/20 hover:bg-blue-400/10">
+                                <TableHead className="text-blue-200">Task</TableHead>
+                                <TableHead className="text-blue-200">Status</TableHead>
+                                <TableHead className="text-blue-200">Priority</TableHead>
+                                <TableHead className="text-blue-200">Deadline</TableHead>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                              {userTasks
+                                .slice(currentPage * TASKS_PER_PAGE, (currentPage + 1) * TASKS_PER_PAGE)
+                                .map((task) => (
+                                  <TableRow
+                                    key={task._id}
+                                    className="cursor-pointer hover:bg-blue-400/20 border-blue-300/20 transition-all duration-200"
+                                    onClick={() => navigate(`/tasks/${task._id}`)}
+                                  >
+                                    <TableCell className="font-medium text-blue-100">{task.title}</TableCell>
+                                    <TableCell>
+                                      <Badge className={getStatusColor(task.status)}>{task.status}</Badge>
+                                    </TableCell>
+                                    <TableCell>
+                                      <Badge className={getPriorityColor(task.priority)}>{task.priority}</Badge>
+                                    </TableCell>
+                                    <TableCell className="text-blue-200/80">
+                                      {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : "No deadline"}
+                                    </TableCell>
+                                  </TableRow>
+                                ))}
+                            </TableBody>
+                          </Table>
                         </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-8 text-muted-foreground">
-                      <Calendar className="mx-auto h-8 w-8 text-muted-foreground/60 mb-2" />
-                      <p>No upcoming deadlines</p>
+                        {userTasks.length > TASKS_PER_PAGE && (
+                          <div className="flex justify-between mt-4">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={handlePrevPage} 
+                              disabled={currentPage === 0}
+                              className="bg-blue-400/20 border-blue-300/30 text-blue-100 hover:bg-blue-400/30 disabled:opacity-50"
+                            >
+                              <ChevronLeft className="h-4 w-4 mr-2" />
+                              Previous
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={handleNextPage}
+                              disabled={(currentPage + 1) * TASKS_PER_PAGE >= userTasks.length}
+                              className="bg-blue-400/20 border-blue-300/30 text-blue-100 hover:bg-blue-400/30 disabled:opacity-50"
+                            >
+                              Next
+                              <ChevronRight className="h-4 w-4 ml-2" />
+                            </Button>
+                          </div>
+                        )}
                     </div>
                   )}
                 </CardContent>
               </Card>
+
+                <Card className="bg-white/10 border-amber-300/30 backdrop-blur-sm">
+                  <CardHeader>
+                    <CardTitle className="text-amber-100 flex items-center gap-2">
+                      <Calendar className="h-5 w-5 text-amber-300" />
+                      Upcoming Deadlines
+                    </CardTitle>
+                    <CardDescription className="text-amber-200/70">Tasks requiring immediate attention</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {userStats.upcomingDeadlines && userStats.upcomingDeadlines.length > 0 ? (
+                      <div className="space-y-4">
+                        {userStats.upcomingDeadlines.map((task) => (
+                          <div
+                            key={task.id}
+                            className="flex items-center justify-between p-3 rounded-md bg-amber-400/10 border border-amber-300/20 cursor-pointer hover:bg-amber-400/20 transition-all duration-200"
+                            onClick={() => navigate(`/tasks/${task.id}`)}
+                          >
+                            <div>
+                              <p className="font-medium text-sm text-amber-100">{task.title}</p>
+                              <p className="text-xs text-amber-200/70">
+                                Deadline: {new Date(task.dueDate).toLocaleDateString()}
+                              </p>
+                            </div>
+                            <Badge className={getPriorityColor(task.priority)}>{task.priority}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8 text-amber-200/70">
+                        <Calendar className="mx-auto h-8 w-8 text-amber-300/60 mb-2" />
+                        <p>No critical deadlines</p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
             </div>
 
-            <Card className="mt-6">
-              <CardHeader>
-                <CardTitle>My Progress</CardTitle>
-                <CardDescription>Your task completion progress</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="space-y-1">
-                        <p className="text-sm font-medium">Overall Completion</p>
-                        <p className="text-xs text-muted-foreground">
-                          {userStats.completedTasks} of {userStats.totalTasks} tasks completed
-                        </p>
-                      </div>
-                      <span className="text-sm font-medium">{userStats.completionRate}%</span>
-                    </div>
-                    <Progress value={userStats.completionRate} className="h-2" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="submissions" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>My Submissions</CardTitle>
-                <CardDescription>Track the status of your task submissions</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {submissions.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <Github className="mx-auto h-8 w-8 text-muted-foreground/60 mb-2" />
-                    <p>You haven't submitted any tasks yet.</p>
-                    <p className="text-sm mt-1">Complete a task and submit it to see it here.</p>
-                  </div>
-                ) : (
-                  <div className="overflow-x-auto">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Task</TableHead>
-                          <TableHead>Submitted On</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead>Actions</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {submissions.map((submission) => (
-                          <TableRow key={submission._id} className="hover:bg-muted/50">
-                            <TableCell className="font-medium">{submission.task?.title || "Unknown Task"}</TableCell>
-                            <TableCell>{new Date(submission.createdAt).toLocaleDateString()}</TableCell>
-                            <TableCell>{getSubmissionStatusBadge(submission.status)}</TableCell>
-                            <TableCell>
-                              <div className="flex gap-2">
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={(e) => {
-                                    e.stopPropagation()
-                                    handleViewSubmission(submission)
-                                  }}
-                                >
-                                  View
-                                </Button>
-                                {submission.status === "Rejected" && (
-                                  <Button
-                                    size="sm"
-                                    onClick={(e) => {
-                                      e.stopPropagation()
-                                      setSelectedSubmission(submission)
-                                      setIsRevisionDialogOpen(true)
-                                    }}
-                                  >
-                                    Submit Revision
-                                  </Button>
-                                )}
-                              </div>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            {recentReviews.length > 0 && (
-              <Card className="mt-6">
+              <Card className="mt-6 bg-white/10 border-green-300/30 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle>Recent Reviews</CardTitle>
-                  <CardDescription>Feedback on your recent submissions</CardDescription>
+                  <CardTitle className="text-green-100 flex items-center gap-2">
+                    <TrendingUp className="h-5 w-5 text-green-300" />
+                    Task Progress
+                  </CardTitle>
+                  <CardDescription className="text-green-200/70">Your task completion metrics</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {recentReviews.map((review) => (
-                      <SubmissionFeedbackCard
-                        key={review._id}
-                        submission={review}
-                        onViewDetails={(submission) => {
-                          setSelectedSubmission(submission)
-                          setIsSubmissionDetailsOpen(true)
-                        }}
-                        onSubmitRevision={(submission) => {
-                          setSelectedSubmission(submission)
-                          setIsRevisionDialogOpen(true)
-                        }}
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="space-y-1">
+                          <p className="text-sm font-medium text-green-100">Overall Completion</p>
+                          <p className="text-xs text-green-200/70">
+                            {userStats.completedTasks} of {userStats.totalTasks} tasks completed
+                          </p>
+                        </div>
+                        <span className="text-sm font-medium text-green-100">{userStats.completionRate}%</span>
+                      </div>
+                      <Progress 
+                        value={userStats.completionRate} 
+                        className="h-3 bg-green-900/30 [&>div]:bg-gradient-to-r [&>div]:from-green-400 [&>div]:to-emerald-400" 
                       />
-                    ))}
+                    </div>
                   </div>
                 </CardContent>
               </Card>
-            )}
+          </TabsContent>
+
+            <TabsContent value="submissions" className="mt-6">
+              <Card className="bg-white/10 border-purple-300/30 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-purple-100 flex items-center gap-2">
+                    <Github className="h-5 w-5 text-purple-300" />
+                    Submissions
+                  </CardTitle>
+                  <CardDescription className="text-purple-200/70">Track the status of your task submissions</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {submissions.length === 0 ? (
+                    <div className="text-center py-8 text-purple-200/70">
+                      <Github className="mx-auto h-8 w-8 text-purple-300/60 mb-2" />
+                      <p>No task submissions yet.</p>
+                      <p className="text-sm mt-1">Complete a task and submit it to see reports here.</p>
+                    </div>
+                  ) : (
+                    <div className="overflow-x-auto scrollbar-hide">
+                      <Table>
+                        <TableHeader>
+                          <TableRow className="border-purple-300/20 hover:bg-purple-400/10">
+                            <TableHead className="text-purple-200">Task</TableHead>
+                            <TableHead className="text-purple-200">Submitted On</TableHead>
+                            <TableHead className="text-purple-200">Status</TableHead>
+                            <TableHead className="text-purple-200">Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {submissions.map((submission) => (
+                            <TableRow key={submission._id} className="hover:bg-purple-400/20 border-purple-300/20 transition-all duration-200">
+                              <TableCell className="font-medium text-purple-100">{submission.task?.title || "Unknown Task"}</TableCell>
+                              <TableCell className="text-purple-200/80">{new Date(submission.createdAt).toLocaleDateString()}</TableCell>
+                              <TableCell>{getSubmissionStatusBadge(submission.status)}</TableCell>
+                              <TableCell>
+                                <div className="flex gap-2">
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      handleViewSubmission(submission)
+                                    }}
+                                    className="bg-purple-400/20 border-purple-300/30 text-purple-100 hover:bg-purple-400/30"
+                                  >
+                                    View
+                                  </Button>
+                                  {submission.status === "Rejected" && (
+                                    <Button
+                                      size="sm"
+                                      onClick={(e) => {
+                                        e.stopPropagation()
+                                        setSelectedSubmission(submission)
+                                        setIsRevisionDialogOpen(true)
+                                      }}
+                                      className="bg-orange-400/20 border-orange-300/30 text-orange-100 hover:bg-orange-400/30"
+                                    >
+                                      Submit Revision
+                                    </Button>
+                                  )}
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {recentReviews.length > 0 && (
+                <Card className="mt-6 bg-white/10 border-cyan-300/30 backdrop-blur-sm">
+                  <CardHeader>
+                    <CardTitle className="text-cyan-100 flex items-center gap-2">
+                      <Bell className="h-5 w-5 text-cyan-300" />
+                      Command Feedback
+                    </CardTitle>
+                    <CardDescription className="text-cyan-200/70">Recent evaluations from mission control</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {recentReviews.map((review) => (
+                        <SubmissionFeedbackCard
+                          key={review._id}
+                          submission={review}
+                          onViewDetails={(submission) => {
+                            setSelectedSubmission(submission)
+                            setIsSubmissionDetailsOpen(true)
+                          }}
+                          onSubmitRevision={(submission) => {
+                            setSelectedSubmission(submission)
+                            setIsRevisionDialogOpen(true)
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
           </TabsContent>
         </Tabs>
 
-         <Dialog open={isSubmissionDetailsOpen} onOpenChange={setIsSubmissionDetailsOpen} className="dialog-overlay">
-          <DialogContent className="dialog-content sm:max-w-[525px]  max-h-[80vh] overflow-y-auto">
-          
-            <DialogHeader>
-              <DialogTitle>Submission Details</DialogTitle>
-              <DialogDescription>{selectedSubmission?.task?.title || "Task Submission"}</DialogDescription>
-            </DialogHeader>
+           <Dialog open={isSubmissionDetailsOpen} onOpenChange={setIsSubmissionDetailsOpen} className="dialog-overlay">
+            <DialogContent className="dialog-content sm:max-w-[525px] max-h-[80vh] overflow-y-auto bg-slate-900/95 border-blue-300/30 backdrop-blur-sm">
+            
+              <DialogHeader>
+                <DialogTitle className="text-blue-100 flex items-center gap-2">
+                  <Github className="h-5 w-5 text-blue-300" />
+                  Submission Details
+                </DialogTitle>
+                <DialogDescription className="text-blue-200/70">{selectedSubmission?.task?.title || "Task Submission"}</DialogDescription>
+              </DialogHeader>
 
-            {selectedSubmission && (
-              <div className="space-y-4 py-4">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    <p className="text-sm font-medium">Status:</p>
-                    {getSubmissionStatusBadge(selectedSubmission.status)}
+              {selectedSubmission && (
+                <div className="space-y-4 py-4">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-medium text-blue-100">Status:</p>
+                      {getSubmissionStatusBadge(selectedSubmission.status)}
+                    </div>
+                    <p className="text-sm text-blue-200/70">
+                      Submitted on {new Date(selectedSubmission.createdAt).toLocaleDateString()}
+                    </p>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Submitted on {new Date(selectedSubmission.createdAt).toLocaleDateString()}
-                  </p>
-                </div>
 
-                <div className="space-y-2">
-                  <p className="text-sm font-medium">GitHub Repository:</p>
-                  <div className="flex items-center gap-2 bg-muted p-2 rounded">
-                    <Github className="h-4 w-4" />
-                    <a
-                      href={selectedSubmission.githubLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
-                    >
-                      {selectedSubmission.githubLink}
-                      <ExternalLink className="h-3 w-3" />
-                    </a>
-                  </div>
-                </div>
-
-                {selectedSubmission.additionalLinks && (
                   <div className="space-y-2">
-                    <p className="text-sm font-medium">Additional Links:</p>
-                    <div className="flex items-center gap-2 bg-muted p-2 rounded">
-                      <ExternalLink className="h-4 w-4" />
+                    <p className="text-sm font-medium text-blue-100">GitHub Repository:</p>
+                    <div className="flex items-center gap-2 bg-white/10 border border-blue-300/30 p-2 rounded">
+                      <Github className="h-4 w-4 text-blue-300" />
                       <a
-                        href={selectedSubmission.additionalLinks}
+                        href={selectedSubmission.githubLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+                        className="text-cyan-300 hover:text-cyan-200 hover:underline flex items-center gap-1"
                       >
-                        {selectedSubmission.additionalLinks}
+                        {selectedSubmission.githubLink}
                         <ExternalLink className="h-3 w-3" />
                       </a>
                     </div>
                   </div>
-                )}
 
-                {selectedSubmission.notes && (
-                  <div className="space-y-2">
-                    <p className="text-sm font-medium">Your Notes:</p>
-                    <div className="bg-muted p-3 rounded">
-                      <p className="text-sm whitespace-pre-line">{selectedSubmission.notes}</p>
+                  {selectedSubmission.additionalLinks && (
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-blue-100">Additional Links:</p>
+                      <div className="flex items-center gap-2 bg-white/10 border border-blue-300/30 p-2 rounded">
+                        <ExternalLink className="h-4 w-4 text-blue-300" />
+                        <a
+                          href={selectedSubmission.additionalLinks}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-cyan-300 hover:text-cyan-200 hover:underline flex items-center gap-1"
+                        >
+                          {selectedSubmission.additionalLinks}
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {selectedSubmission.feedback && (
-                  <div className="space-y-2">
-                    <p className="text-sm font-medium">Reviewer Feedback:</p>
-                    <div
-                      className={`p-3 rounded ${
-                        selectedSubmission.status === "Approved"
-                          ? "bg-green-50 dark:bg-green-900/20"
-                          : "bg-red-50 dark:bg-red-900/20"
-                      }`}
-                    >
-                      <p className="text-sm whitespace-pre-line">{selectedSubmission.feedback}</p>
+                  {selectedSubmission.notes && (
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-blue-100">Your Notes:</p>
+                      <div className="bg-white/10 border border-blue-300/30 p-3 rounded">
+                        <p className="text-sm whitespace-pre-line text-blue-200/90">{selectedSubmission.notes}</p>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+
+                  {selectedSubmission.feedback && (
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-blue-100">Reviewer Feedback:</p>
+                      <div
+                        className={`p-3 rounded border ${
+                          selectedSubmission.status === "Approved"
+                            ? "bg-green-400/20 border-green-300/30"
+                            : "bg-red-400/20 border-red-300/30"
+                        }`}
+                      >
+                        <p className="text-sm whitespace-pre-line text-white/90">{selectedSubmission.feedback}</p>
+                      </div>
+                    </div>
+                  )}
               </div>
             )}
 
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsSubmissionDetailsOpen(false)}>
-                Close
-              </Button>
-              {selectedSubmission?.status === "Rejected" && (
-                <Button
-                  onClick={() => {
-                    setIsSubmissionDetailsOpen(false)
-                    setIsRevisionDialogOpen(true)
-                  }}
+              <DialogFooter>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setIsSubmissionDetailsOpen(false)}
+                  className="bg-white/10 border-blue-300/30 text-blue-100 hover:bg-blue-400/20"
                 >
+                  Close
+                </Button>
+                {selectedSubmission?.status === "Rejected" && (
+                  <Button
+                    onClick={() => {
+                      setIsSubmissionDetailsOpen(false)
+                      setIsRevisionDialogOpen(true)
+                    }}
+                    className="bg-orange-400/20 border-orange-300/30 text-orange-100 hover:bg-orange-400/30"
+                  >
+                    Submit Revision
+                  </Button>
+                )}
+                {selectedSubmission?.task && (
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setIsSubmissionDetailsOpen(false)
+                      navigate(`/tasks/${selectedSubmission.task._id}`)
+                    }}
+                    className="bg-purple-400/20 border-purple-300/30 text-purple-100 hover:bg-purple-400/30"
+                  >
+                    View Task
+                  </Button>
+                )}
+              </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+          <Dialog open={isRevisionDialogOpen} onOpenChange={setIsRevisionDialogOpen}>
+            <DialogContent className="sm:max-w-[525px] bg-slate-900/95 border-orange-300/30 backdrop-blur-sm">
+              <DialogHeader>
+                <DialogTitle className="text-orange-100 flex items-center gap-2">
+                  <RefreshCw className="h-5 w-5 text-orange-300" />
                   Submit Revision
-                </Button>
-              )}
-              {selectedSubmission?.task && (
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setIsSubmissionDetailsOpen(false)
-                    navigate(`/tasks/${selectedSubmission.task._id}`)
-                  }}
-                >
-                  View Task
-                </Button>
-              )}
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+                </DialogTitle>
+                <DialogDescription className="text-orange-200/70">Update your submission based on reviewer feedback</DialogDescription>
+              </DialogHeader>
 
-        <Dialog open={isRevisionDialogOpen} onOpenChange={setIsRevisionDialogOpen}>
-          <DialogContent className="sm:max-w-[525px]">
-            <DialogHeader>
-              <DialogTitle>Submit Revision</DialogTitle>
-              <DialogDescription>Update your submission based on the reviewer's feedback</DialogDescription>
-            </DialogHeader>
+              {selectedSubmission && (
+                <div className="space-y-4 py-4">
+                  {selectedSubmission.feedback && (
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-orange-100">Reviewer Feedback:</p>
+                      <div className="bg-red-400/20 border border-red-300/30 p-3 rounded">
+                        <p className="text-sm whitespace-pre-line text-red-100">{selectedSubmission.feedback}</p>
+                      </div>
+                    </div>
+                  )}
 
-            {selectedSubmission && (
-              <div className="space-y-4 py-4">
-                {selectedSubmission.feedback && (
                   <div className="space-y-2">
-                    <p className="text-sm font-medium">Reviewer Feedback:</p>
-                    <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded">
-                      <p className="text-sm whitespace-pre-line">{selectedSubmission.feedback}</p>
+                    <p className="text-sm font-medium text-orange-100">Your Original Submission:</p>
+                    <div className="flex items-center gap-2 bg-white/10 border border-orange-300/30 p-2 rounded">
+                      <Github className="h-4 w-4 text-orange-300" />
+                      <a
+                        href={selectedSubmission.githubLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-cyan-300 hover:text-cyan-200 hover:underline flex items-center gap-1"
+                      >
+                        {selectedSubmission.githubLink}
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
                     </div>
                   </div>
-                )}
 
-                <div className="space-y-2">
-                  <p className="text-sm font-medium">Your Original Submission:</p>
-                  <div className="flex items-center gap-2 bg-muted p-2 rounded">
-                    <Github className="h-4 w-4" />
-                    <a
-                      href={selectedSubmission.githubLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
-                    >
-                      {selectedSubmission.githubLink}
-                      <ExternalLink className="h-3 w-3" />
-                    </a>
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-orange-100">Revision Notes:</p>
+                    <Textarea
+                      placeholder="Describe the changes you've made in response to the feedback..."
+                      value={revisionNotes}
+                      onChange={(e) => setRevisionNotes(e.target.value)}
+                      rows={4}
+                      className="bg-white/10 border-orange-300/30 text-orange-100 placeholder:text-orange-200/50 focus:border-orange-300/50"
+                    />
                   </div>
                 </div>
+              )}
 
-                <div className="space-y-2">
-                  <p className="text-sm font-medium">Revision Notes:</p>
-                  <Textarea
-                    placeholder="Describe the changes you've made in response to the feedback..."
-                    value={revisionNotes}
-                    onChange={(e) => setRevisionNotes(e.target.value)}
-                    rows={4}
-                  />
-                </div>
-              </div>
-            )}
-
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsRevisionDialogOpen(false)}>
-                Cancel
-              </Button>
-              <Button onClick={handleSubmitRevision} disabled={!revisionNotes.trim() || isLoading}>
-                {isLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Submitting...
-                  </>
-                ) : (
-                  "Submit Revision"
-                )}
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+              <DialogFooter>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setIsRevisionDialogOpen(false)}
+                  className="bg-white/10 border-orange-300/30 text-orange-100 hover:bg-orange-400/20"
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={handleSubmitRevision} 
+                  disabled={!revisionNotes.trim() || isLoading}
+                  className="bg-orange-400/20 border-orange-300/30 text-orange-100 hover:bg-orange-400/30 disabled:opacity-50"
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Submitting...
+                    </>
+                  ) : (
+                    "Submit Revision"
+                  )}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
     </DashboardProvider>
   )

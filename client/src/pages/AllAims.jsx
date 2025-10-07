@@ -460,22 +460,11 @@ function AllAims() {
 
   return (
     <div className="relative min-h-screen bg-transparent overflow-hidden">
-      {/* LAYER 1: Background */}
-      <div className="absolute inset-0 bg-transparent"></div>
-      <div className="absolute inset-0 cosmic-grid opacity-5"></div>
-      
-      {/* LAYER 2: Space Effects */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/6 rounded-full blur-3xl animate-pulse" style={{animationDuration: '15s'}}></div>
-        <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl animate-pulse" style={{animationDuration: '18s', animationDelay: '4s'}}></div>
-        <div className="absolute top-1/2 right-1/6 w-72 h-72 bg-cyan-600/4 rounded-full blur-3xl animate-pulse" style={{animationDuration: '20s', animationDelay: '8s'}}></div>
-      </div>
-
-      {/* LAYER 3: Particles */}
+      {/* LAYER 1: Particles Only */}
       <SpaceParticles count={60} className="opacity-40" />
       <CosmicOrbs count={8} className="opacity-25" />
       
-      {/* LAYER 4: Main Content with hidden scrollbar */}
+      {/* LAYER 2: Main Content with hidden scrollbar */}
       <div className="relative z-10 space-y-8 p-4 lg:p-8 h-screen overflow-y-auto scrollbar-none overflow-x-hidden">
         {/* Enhanced Header */}
         <div className="text-center space-y-6 py-8">
