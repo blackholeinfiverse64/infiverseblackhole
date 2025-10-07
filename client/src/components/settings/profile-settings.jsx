@@ -8,6 +8,7 @@ import { Textarea } from "../ui/textarea"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Card, CardContent } from "../ui/card"
 import { Separator } from "../ui/separator"
+import { User } from "lucide-react"
 import { api } from "../../lib/api"
 import { useToast } from "../../hooks/use-toast"
 import { useAuth } from "@/context/auth-context"
@@ -114,31 +115,40 @@ export function ProfileSettings() {
   }
 
   return (
-    <div className="space-y-6 py-4">
-      <div>
-        <h3 className="text-lg font-medium">Profile</h3>
-        <p className="text-sm text-muted-foreground">
-          Manage your personal information and preferences
+    <div className="space-y-8 py-4">
+      <div className="text-center space-y-2">
+        <h3 className="text-xl font-bold bg-gradient-to-r from-blue-300 to-purple-300 bg-clip-text text-transparent">
+          Profile
+        </h3>
+        <p className="text-white/60">
+          Configure your identity across the digital universe
         </p>
       </div>
-      <Separator />
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="flex flex-col gap-6 md:flex-row">
-          <Card className="w-full md:w-[200px] flex-shrink-0">
-            <CardContent className="p-4 flex flex-col items-center gap-4">
-              <Avatar className="h-24 w-24">
-                <AvatarImage src={formData.avatar} alt="Profile" />
-                <AvatarFallback>
-                  {formData.name ? formData.name[0] : "U"}
-                </AvatarFallback>
-              </Avatar>
+      
+      <div className="h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+      
+      <form onSubmit={handleSubmit} className="space-y-8">
+        <div className="flex flex-col gap-8 lg:flex-row">
+          <Card className="w-full lg:w-[240px] flex-shrink-0 bg-background/20 backdrop-blur-sm border-primary/20">
+            <CardContent className="p-6 flex flex-col items-center gap-6">
+              <div className="relative">
+                <Avatar className="h-28 w-28 border-4 border-primary/30 shadow-2xl">
+                  <AvatarImage src={formData.avatar} alt="Profile" />
+                  <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-white text-2xl font-bold">
+                    {formData.name ? formData.name[0] : "U"}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-gold to-accent rounded-full flex items-center justify-center border-2 border-background">
+                  <User className="h-4 w-4 text-background" />
+                </div>
+              </div>
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full"
+                className="w-full bg-primary/10 border-primary/30 text-white hover:bg-primary/20 transition-all duration-300"
                 as="label"
               >
-                Change Avatar
+                🖼️ Change Avatar
                 <input
                   type="file"
                   accept="image/*"
@@ -149,52 +159,67 @@ export function ProfileSettings() {
             </CardContent>
           </Card>
 
-          <div className="flex-1 space-y-4">
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
+          <div className="flex-1 space-y-6">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <div className="space-y-3">
+                <Label htmlFor="name" className="text-white font-medium flex items-center gap-2">
+                  👤 Full Name
+                </Label>
                 <Input
                   id="name"
                   value={formData.name}
                   onChange={(e) => handleChange("name", e.target.value)}
+                  className="bg-background/20 border-primary/30 text-white placeholder-white/40 focus:border-primary/60 transition-all duration-300"
+                  placeholder="Enter your cosmic name"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+              <div className="space-y-3">
+                <Label htmlFor="email" className="text-white font-medium flex items-center gap-2">
+                  📧 Email Address
+                </Label>
                 <Input
                   id="email"
                   type="email"
                   value={formData.email}
                   onChange={(e) => handleChange("email", e.target.value)}
+                  className="bg-background/20 border-primary/30 text-white placeholder-white/40 focus:border-primary/60 transition-all duration-300"
+                  placeholder="your.email@cosmos.space"
                 />
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="bio">Bio</Label>
+            <div className="space-y-3">
+              <Label htmlFor="bio" className="text-white font-medium flex items-center gap-2">
+                📝 Cosmic Biography
+              </Label>
               <Textarea
                 id="bio"
                 value={formData.bio}
                 onChange={(e) => handleChange("bio", e.target.value)}
-                className="min-h-[100px]"
+                className="min-h-[120px] bg-background/20 border-primary/30 text-white placeholder-white/40 focus:border-primary/60 transition-all duration-300 resize-none"
+                placeholder="Tell the universe about yourself..."
               />
             </div>
           </div>
         </div>
 
-        <Separator />
+        <div className="h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
 
-        <div className="space-y-4">
-          <div>
-            <h4 className="text-sm font-medium">Password</h4>
-            <p className="text-sm text-muted-foreground">
-              Update your password to keep your account secure
+        <div className="space-y-6">
+          <div className="text-center space-y-2">
+            <h4 className="text-lg font-bold bg-gradient-to-r from-red-300 to-orange-300 bg-clip-text text-transparent flex items-center justify-center gap-2">
+              🔐 Security Settings
+            </h4>
+            <p className="text-white/60">
+              Update your password to secure your cosmic journey
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="current-password">Current Password</Label>
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <div className="space-y-3 lg:col-span-2">
+              <Label htmlFor="current-password" className="text-white font-medium flex items-center gap-2">
+                🔑 Current Password
+              </Label>
               <Input
                 id="current-password"
                 type="password"
@@ -202,11 +227,14 @@ export function ProfileSettings() {
                 onChange={(e) =>
                   handlePasswordChange("currentPassword", e.target.value)
                 }
+                className="bg-background/20 border-primary/30 text-white placeholder-white/40 focus:border-primary/60 transition-all duration-300"
+                placeholder="Enter your current password"
               />
             </div>
-            <div></div>
-            <div className="space-y-2">
-              <Label htmlFor="new-password">New Password</Label>
+            <div className="space-y-3">
+              <Label htmlFor="new-password" className="text-white font-medium flex items-center gap-2">
+                🆕 New Password
+              </Label>
               <Input
                 id="new-password"
                 type="password"
@@ -214,10 +242,14 @@ export function ProfileSettings() {
                 onChange={(e) =>
                   handlePasswordChange("newPassword", e.target.value)
                 }
+                className="bg-background/20 border-primary/30 text-white placeholder-white/40 focus:border-primary/60 transition-all duration-300"
+                placeholder="Enter new password"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="confirm-password">Confirm Password</Label>
+            <div className="space-y-3">
+              <Label htmlFor="confirm-password" className="text-white font-medium flex items-center gap-2">
+                ✅ Confirm Password
+              </Label>
               <Input
                 id="confirm-password"
                 type="password"
@@ -225,14 +257,29 @@ export function ProfileSettings() {
                 onChange={(e) =>
                   handlePasswordChange("confirmPassword", e.target.value)
                 }
+                className="bg-background/20 border-primary/30 text-white placeholder-white/40 focus:border-primary/60 transition-all duration-300"
+                placeholder="Confirm new password"
               />
             </div>
           </div>
         </div>
 
-        <div className="flex justify-end">
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Saving..." : "Save Changes"}
+        <div className="flex justify-center pt-6">
+          <Button 
+            type="submit" 
+            disabled={isLoading}
+            className="bg-gradient-to-r from-primary via-accent to-primary text-white px-8 py-3 rounded-xl font-semibold shadow-2xl hover:shadow-primary/25 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:transform-none"
+          >
+            {isLoading ? (
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+                Saving to Cosmos...
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                💫 Save Cosmic Profile
+              </div>
+            )}
           </Button>
         </div>
       </form>

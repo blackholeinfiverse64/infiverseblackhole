@@ -1,6 +1,8 @@
 import { useLocation, Link } from "react-router-dom";
+import { memo, useCallback } from "react";
 import { LayoutDashboard, CheckSquare, Network, Users, Sparkles, Settings, LogOut, CheckCircle, BarChart, Airplay, LayoutDashboardIcon, Target, Monitor, DollarSign, Calendar, Clock, UserCog, UserCheck } from "lucide-react";
 import { useAuth } from "../../context/auth-context";
+import blackholeLogo from "../../assets/blackhole.png";
 
 export function DashboardSidebar() {
   const location = useLocation();
@@ -54,16 +56,18 @@ export function DashboardSidebar() {
       <div className="flex flex-col h-full relative z-10">
         {/* Enhanced Header */}
         <div className="flex items-center gap-3 p-6">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary via-accent to-primary p-0.5 glow-primary">
-            <div className="w-full h-full rounded-lg bg-background/90 flex items-center justify-center">
-              <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary via-accent to-primary p-0.5 glow-primary">
+            <div className="w-full h-full rounded-lg bg-background/90 flex items-center justify-center overflow-hidden">
+              <img 
+                src={blackholeLogo} 
+                alt="Blackhole Logo" 
+                className="w-8 h-8 object-contain"
+              />
             </div>
           </div>
           <div>
-            <h1 className="text-lg font-bold text-white glow-text">Infiverse</h1>
-            <p className="text-xs text-gold/80 font-medium">Cosmic Workspace</p>
+            <h1 className="text-lg font-bold text-white glow-text">Blackhole</h1>
+            <p className="text-xs text-gold/80 font-medium">Infiverse</p>
           </div>
         </div>
 

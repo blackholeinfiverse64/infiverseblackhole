@@ -3,64 +3,51 @@ import React from 'react'
 export function SpaceParticles({ count = 50, className = '' }) {
   const particles = Array.from({ length: count }, (_, i) => ({
     id: i,
-    size: Math.random() * 3 + 3, // Clear, visible particles: 3-6px
-    centerX: Math.random() * 100, // Center point X for orbit
-    centerY: Math.random() * 100, // Center point Y for orbit
-    animationDelay: Math.random() * 10, // Reduced random delay
-    animationDuration: Math.random() * 40 + 60, // Much slower: 60-100 seconds
-    orbitRadius: Math.random() * 50 + 20, // Smaller, more stable orbits
-    rotationDirection: Math.random() > 0.5 ? 1 : -1, // Clockwise or counter-clockwise
+    size: Math.random() * 2 + 2, // Medium & small particles: 2-4px
+    startX: Math.random() * 120 - 10, // Start from left side (including off-screen)
+    startY: Math.random() * 120 - 10, // Start from top side (including off-screen)
+    animationDelay: Math.random() * 20, // Staggered start times
+    animationDuration: Math.random() * 40 + 80, // Slower: 80-120 seconds for steady movement
   }))
 
   return (
     <>
-      {/* CSS for circular revolving motion */}
+      {/* CSS for 135-degree linear movement */}
       <style jsx>{`
-        @keyframes revolve-clockwise {
+        @keyframes move-135-degrees {
           0% {
-            transform: rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg);
+            transform: translate(0, 0);
+            opacity: 0;
+          }
+          10% {
+            opacity: 0.8;
+          }
+          90% {
+            opacity: 0.8;
           }
           100% {
-            transform: rotate(360deg) translateX(var(--orbit-radius)) rotate(-360deg);
-          }
-        }
-
-        @keyframes revolve-counter-clockwise {
-          0% {
-            transform: rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg);
-          }
-          100% {
-            transform: rotate(-360deg) translateX(var(--orbit-radius)) rotate(360deg);
+            transform: translate(150vw, 150vh);
+            opacity: 0;
           }
         }
         
         @keyframes white-particle-glow {
           0%, 100% {
-            opacity: 0.6;
-            transform: scale(1);
+            opacity: 0.7;
           }
           50% {
-            opacity: 0.9;
-            transform: scale(1.1);
+            opacity: 1;
           }
         }
 
-        .particle-revolve {
-          will-change: transform;
-          animation: var(--revolve-direction) var(--duration) linear infinite, white-particle-glow 8s ease-in-out infinite;
-          transform-origin: center;
+        .particle-135 {
+          will-change: transform, opacity;
+          animation: move-135-degrees var(--duration) linear infinite, white-particle-glow 4s ease-in-out infinite;
           filter: none; /* Remove any blur */
           image-rendering: crisp-edges; /* Make particles sharp */
           -webkit-backface-visibility: hidden; /* Prevent blur on transform */
           backface-visibility: hidden;
-        }
-
-        .particle-revolve-clockwise {
-          --revolve-direction: revolve-clockwise;
-        }
-
-        .particle-revolve-counter {
-          --revolve-direction: revolve-counter-clockwise;
+          transition: none; /* Remove any transitions that might cause blur */
         }
       `}</style>
       
@@ -68,23 +55,21 @@ export function SpaceParticles({ count = 50, className = '' }) {
         {particles.map((particle) => (
           <div
             key={particle.id}
-            className={`absolute particle-revolve ${
-              particle.rotationDirection > 0 ? 'particle-revolve-clockwise' : 'particle-revolve-counter'
-            } bg-white rounded-full`}
+            className="absolute particle-135 bg-white rounded-full"
             style={{
               width: `${particle.size}px`,
               height: `${particle.size}px`,
-              left: `${particle.centerX}%`,
-              top: `${particle.centerY}%`,
+              left: `${particle.startX}%`,
+              top: `${particle.startY}%`,
               '--duration': `${particle.animationDuration}s`,
-              '--orbit-radius': `${particle.orbitRadius}px`,
               animationDelay: `${particle.animationDelay}s`,
               boxShadow: `
-                0 0 ${particle.size * 0.3}px rgba(255, 255, 255, 1),
-                0 0 ${particle.size * 0.6}px rgba(255, 255, 255, 0.6)
+                0 0 ${particle.size * 0.5}px rgba(255, 255, 255, 0.8),
+                0 0 ${particle.size * 1}px rgba(255, 255, 255, 0.4)
               `,
-              border: '1px solid rgba(255, 255, 255, 1)',
-              backgroundColor: 'rgba(255, 255, 255, 0.95)', /* Ensure solid white core */
+              border: '1px solid rgba(255, 255, 255, 0.9)',
+              backgroundColor: 'rgba(255, 255, 255, 1)', /* Pure white core */
+              borderRadius: '50%',
             }}
           />
         ))}
