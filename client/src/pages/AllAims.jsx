@@ -479,13 +479,6 @@ function AllAims() {
       <div className="relative z-10 space-y-8 p-4 lg:p-8 h-screen overflow-y-auto scrollbar-none overflow-x-hidden">
         {/* Enhanced Header */}
         <div className="text-center space-y-6 py-8">
-          <div className="relative inline-flex items-center justify-center mb-4">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-xl animate-pulse"></div>
-            <div className="relative w-16 h-16 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl border border-blue-400/30 flex items-center justify-center backdrop-blur-sm">
-              <Target className="w-8 h-8 text-blue-400" />
-            </div>
-          </div>
-          
           <div>
                         <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent mb-4">
               Aims Dashboard

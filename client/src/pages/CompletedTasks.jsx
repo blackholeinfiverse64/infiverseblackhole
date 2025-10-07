@@ -31,6 +31,7 @@ import { Label } from "../components/ui/label"
 import { Textarea } from "../components/ui/textarea"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
 import { CompletedTasksStats } from "../components/dashboard/CompletedTasksStats"
+import { SpaceParticles, CosmicOrbs } from "../components/ui/space-particles"
 import { API_URL } from "@/lib/api"
 
 const CompletedTasks = () => {
@@ -225,37 +226,72 @@ const handleReviewSubmission = async () => {
   }
 
   return (
-    <div className="h-screen flex flex-col space-y-6 overflow-y-auto px-4 md:px-6 py-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Completed Tasks</h1>
-          <p className="text-muted-foreground">Review and manage task submissions</p>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-2">
-          <Button variant="outline" size="sm" onClick={fetchData} className="h-9">
-            <Clock className="mr-2 h-4 w-4" /> Refresh
-          </Button>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="h-9"
-            onClick={() => setShowStats(!showStats)}
-          >
-            {showStats ? "Hide Stats" : "Show Stats"}
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="h-9">
-                <Filter className="mr-2 h-4 w-4" /> View
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setViewMode("grid")}>Grid View</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setViewMode("list")}>List View</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+    <div className="relative min-h-screen bg-transparent overflow-hidden">
+      {/* LAYER 1: Space Particles */}
+      <div className="absolute inset-0 opacity-30">
+        <SpaceParticles count={60} className="opacity-40" />
       </div>
+      
+      <div className="absolute inset-0 opacity-20">
+        <CosmicOrbs count={8} className="opacity-25" />
+      </div>
+
+      {/* Grid Pattern Overlay */}
+      <div className="absolute inset-0 opacity-10">
+        <div 
+          className="w-full h-full opacity-30"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: '50px 50px'
+          }}
+        />
+      </div>
+      
+      {/* LAYER 2: Main Content */}
+      <div className="relative z-10 h-screen flex flex-col space-y-6 overflow-y-auto scrollbar-none px-4 md:px-6 py-6">
+        {/* Enhanced Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-2">
+            <h1 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">Completed Tasks</h1>
+            <p className="text-white/70 text-lg">Review and manage task submissions across the universe</p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={fetchData} 
+              className="h-9 bg-gradient-to-r from-blue-500/10 to-blue-600/10 border-blue-500/30 text-blue-300 hover:from-blue-500/20 hover:to-blue-600/20 hover:border-blue-400/50 transition-all duration-300"
+            >
+              <Clock className="mr-2 h-4 w-4" /> Refresh Data
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="h-9 bg-gradient-to-r from-purple-500/10 to-purple-600/10 border-purple-500/30 text-purple-300 hover:from-purple-500/20 hover:to-purple-600/20 hover:border-purple-400/50 transition-all duration-300"
+              onClick={() => setShowStats(!showStats)}
+            >
+              {showStats ? "Hide Analytics" : "Show Analytics"}
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="h-9 bg-gradient-to-r from-cyan-500/10 to-cyan-600/10 border-cyan-500/30 text-cyan-300 hover:from-cyan-500/20 hover:to-cyan-600/20 hover:border-cyan-400/50 transition-all duration-300"
+                >
+                  <Filter className="mr-2 h-4 w-4" /> Display Mode
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="bg-slate-800/90 backdrop-blur-md border-slate-600/50">
+                <DropdownMenuItem onClick={() => setViewMode("grid")} className="text-white hover:bg-blue-500/20">Grid View</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setViewMode("list")} className="text-white hover:bg-blue-500/20">List View</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
 
       {showStats && (
         <div className="mb-6">
@@ -263,102 +299,115 @@ const handleReviewSubmission = async () => {
         </div>
       )}
 
-      <div className="flex flex-col md:flex-row gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search tasks or assignees..."
-            className="pl-8"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+        {/* Enhanced Filter Controls */}
+        <div className="bg-gradient-to-r from-slate-800/40 to-slate-900/40 backdrop-blur-md border border-slate-600/30 rounded-xl p-6">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-3 h-4 w-4 text-blue-400/70" />
+              <Input
+                placeholder="Search across the task galaxy..."
+                className="pl-10 bg-slate-800/50 border-slate-600/50 text-white placeholder:text-white/50 focus:border-blue-400/50 focus:ring-blue-400/20"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <Select value={selectedDepartment} onValueChange={setSelectedDepartment}>
+              <SelectTrigger className="w-full md:w-[220px] bg-slate-800/50 border-slate-600/50 text-white">
+                <SelectValue placeholder="Filter by department" />
+              </SelectTrigger>
+              <SelectContent className="bg-slate-800/90 backdrop-blur-md border-slate-600/50">
+                <SelectItem value="all" className="text-white hover:bg-blue-500/20">All Departments</SelectItem>
+                {Array.isArray(departments) && departments.map((department) => (
+                  <SelectItem key={department._id} value={department._id} className="text-white hover:bg-blue-500/20">
+                    <div className="flex items-center">
+                      <div className={`w-3 h-3 rounded-full mr-2 ${department.color}`}></div>
+                      {department.name}
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={submissionFilter} onValueChange={setSubmissionFilter}>
+              <SelectTrigger className="w-full md:w-[220px] bg-slate-800/50 border-slate-600/50 text-white">
+                <SelectValue placeholder="Filter by submission" />
+              </SelectTrigger>
+              <SelectContent className="bg-slate-800/90 backdrop-blur-md border-slate-600/50">
+                <SelectItem value="all" className="text-white hover:bg-blue-500/20">All Submissions</SelectItem>
+                <SelectItem value="pending" className="text-white hover:bg-blue-500/20">Pending Review</SelectItem>
+                <SelectItem value="approved" className="text-white hover:bg-blue-500/20">Approved</SelectItem>
+                <SelectItem value="rejected" className="text-white hover:bg-blue-500/20">Rejected</SelectItem>
+                <SelectItem value="noSubmission" className="text-white hover:bg-blue-500/20">No Submission</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
-        <Select value={selectedDepartment} onValueChange={setSelectedDepartment}>
-          <SelectTrigger className="w-full md:w-[200px]">
-            <SelectValue placeholder="Filter by department" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Departments</SelectItem>
-            {Array.isArray(departments) && departments.map((department) => (
-              <SelectItem key={department._id} value={department._id}>
-                <div className="flex items-center">
-                  <div className={`w-3 h-3 rounded-full mr-2 ${department.color}`}></div>
-                  {department.name}
-                </div>
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Select value={submissionFilter} onValueChange={setSubmissionFilter}>
-          <SelectTrigger className="w-full md:w-[200px]">
-            <SelectValue placeholder="Filter by submission" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Submissions</SelectItem>
-            <SelectItem value="pending">Pending Review</SelectItem>
-            <SelectItem value="approved">Approved</SelectItem>
-            <SelectItem value="rejected">Rejected</SelectItem>
-            <SelectItem value="noSubmission">No Submission</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
 
-      <Tabs defaultValue="tasks" className="w-full flex-1">
-        <TabsList className="w-full max-w-md mx-auto grid grid-cols-2 mb-6">
-          <TabsTrigger value="tasks" className="text-sm">
-            <Check className="mr-2 h-4 w-4" /> Tasks
-          </TabsTrigger>
-          <TabsTrigger value="submissions" className="text-sm">
-            <Github className="mr-2 h-4 w-4" /> Submissions
-          </TabsTrigger>
-        </TabsList>
+        {/* Enhanced Tabs Navigation */}
+        <Tabs defaultValue="tasks" className="w-full flex-1">
+          <TabsList className="w-full max-w-md mx-auto grid grid-cols-2 mb-8 bg-slate-800/50 border border-slate-600/30">
+            <TabsTrigger 
+              value="tasks" 
+              className="text-sm data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500/20 data-[state=active]:to-blue-600/20 data-[state=active]:text-blue-300 text-white/70"
+            >
+              <Check className="mr-2 h-4 w-4" /> Task Galaxy
+            </TabsTrigger>
+            <TabsTrigger 
+              value="submissions" 
+              className="text-sm data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500/20 data-[state=active]:to-purple-600/20 data-[state=active]:text-purple-300 text-white/70"
+            >
+              <Github className="mr-2 h-4 w-4" /> Submission Hub
+            </TabsTrigger>
+          </TabsList>
 
-        <TabsContent value="tasks" className="mt-0">
-          {filteredTasks.length === 0 ? (
-            <Card className="bg-muted/40">
-              <CardContent className="flex flex-col items-center justify-center py-10">
-                <div className="rounded-full bg-background p-3 mb-3">
-                  <Check className="h-6 w-6 text-muted-foreground" />
-                </div>
-                <h3 className="text-xl font-semibold mb-1">No completed tasks found</h3>
-                <p className="text-muted-foreground text-center max-w-md">
-                  There are no completed tasks matching your current filters. Try changing your search criteria or check back later.
-                </p>
-              </CardContent>
-            </Card>
-          ) : viewMode === "grid" ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredTasks.map((task) => {
-                const submission = getSubmissionForTask(task._id)
-                const document = submission ? getDocumentDetails(submission.documentLink, submission.fileType) : null
-                return (
-                  <Card
-                    key={task._id}
-                    className="overflow-hidden transition-all hover:shadow-md dark:hover:shadow-primary/10"
-                  >
-                    <CardHeader className="pb-2">
-                      <div className="flex justify-between items-start gap-2">
-                        <CardTitle className="text-lg line-clamp-1">{task.title}</CardTitle>
-                        {task.department && (
-                          <Badge
-                            variant="outline"
-                            className="border-none bg-muted hover:bg-muted flex items-center gap-1.5"
-                          >
-                            <div className={`w-2 h-2 rounded-full ${task.department.color}`}></div>
-                            <span className="text-xs font-medium">{task.department.name}</span>
-                          </Badge>
-                        )}
-                      </div>
-                      <CardDescription className="line-clamp-2 mt-1">{task.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="pb-2">
-                      {submission ? (
-                        <div className="space-y-3">
-                          <div className="flex justify-between items-center">
-                            <h4 className="text-sm font-medium">Submission</h4>
-                            {getSubmissionStatusBadge(submission.status)}
-                          </div>
-                          <div className="bg-muted/50 rounded-lg p-3 space-y-2">
+          <TabsContent value="tasks" className="mt-0">
+            {filteredTasks.length === 0 ? (
+              <Card className="bg-gradient-to-br from-slate-800/30 to-slate-900/50 border border-orange-500/20 backdrop-blur-md shadow-xl">
+                <CardContent className="flex flex-col items-center justify-center py-16 text-center">
+                  <div className="relative mb-6">
+                    <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-full blur-xl animate-pulse"></div>
+                    <div className="relative w-16 h-16 bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-2xl border border-orange-400/20 flex items-center justify-center backdrop-blur-sm">
+                      <Check className="h-8 w-8 text-orange-400" />
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-medium text-white mb-2">No Completed Tasks Found</h3>
+                  <p className="text-white/60 max-w-md mx-auto leading-relaxed">
+                    No completed tasks match your current filter criteria. Try adjusting your search parameters or check back later.
+                  </p>
+                </CardContent>
+              </Card>
+            ) : viewMode === "grid" ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredTasks.map((task) => {
+                  const submission = getSubmissionForTask(task._id)
+                  const document = submission ? getDocumentDetails(submission.documentLink, submission.fileType) : null
+                  return (
+                    <Card
+                      key={task._id}
+                      className="bg-gradient-to-br from-slate-800/30 to-slate-900/50 border border-blue-500/20 backdrop-blur-md shadow-xl hover:from-slate-800/40 hover:to-slate-900/60 hover:border-blue-400/30 transition-all duration-300 overflow-hidden group"
+                    >
+                      <CardHeader className="pb-3">
+                        <div className="flex justify-between items-start gap-2">
+                          <CardTitle className="text-lg text-white line-clamp-1 group-hover:text-blue-300 transition-colors duration-300">{task.title}</CardTitle>
+                          {task.department && (
+                            <Badge
+                              variant="outline"
+                              className="border-none bg-gradient-to-r from-purple-500/20 to-purple-600/20 border border-purple-500/30 text-purple-300 flex items-center gap-1.5"
+                            >
+                              <div className={`w-2 h-2 rounded-full ${task.department.color}`}></div>
+                              <span className="text-xs font-medium">{task.department.name}</span>
+                            </Badge>
+                          )}
+                        </div>
+                        <CardDescription className="line-clamp-2 mt-1 text-white/60">{task.description}</CardDescription>
+                      </CardHeader>
+                      <CardContent className="pb-3">
+                        {submission ? (
+                          <div className="space-y-3">
+                            <div className="flex justify-between items-center">
+                              <h4 className="text-sm font-medium text-white/80">Mission Status</h4>
+                              {getSubmissionStatusBadge(submission.status)}
+                            </div>
+                            <div className="bg-gradient-to-br from-slate-700/40 to-slate-800/40 border border-slate-600/30 rounded-lg p-3 space-y-2 backdrop-blur-sm">
                             {submission.githubLink && (
                               <div className="flex items-center gap-2 text-sm">
                                 <Github className="h-4 w-4 text-muted-foreground" />
@@ -896,6 +945,7 @@ const handleReviewSubmission = async () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      </div>
     </div>
   )
 }
