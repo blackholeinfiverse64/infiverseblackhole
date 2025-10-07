@@ -408,7 +408,7 @@ export function DepartmentDetails({ department, onBack }) {
                   <p>No tasks found for this department.</p>
                 </div>
               ) : (
-                <div className="overflow-x-auto">
+                <div className="overflow-x-visible">
                   <Table>
                     <TableHeader>
                       <TableRow>

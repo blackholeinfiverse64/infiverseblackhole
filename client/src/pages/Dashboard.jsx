@@ -14,6 +14,7 @@ import { RecentActivity } from "../components/dashboard/recent-activity"
 import { api, API_URL } from "../lib/api"
 import { useToast } from "../hooks/use-toast"
 import { useAuth } from "../context/auth-context"
+import { SpaceParticles, CosmicOrbs } from "../components/ui/space-particles"
 import axios from "axios"
 
 
@@ -156,7 +157,11 @@ function Dashboard() {
   }
 
   return (
-    <div className="space-y-8 animate-fade-in relative">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 relative overflow-hidden">
+      <SpaceParticles />
+      <CosmicOrbs />
+      <div className="relative z-10 p-6">
+        <div className="space-y-8 animate-fade-in relative">
       {/* Space Background Elements */}
       <div className="absolute inset-0 cosmic-grid opacity-10 pointer-events-none"></div>
       
@@ -171,10 +176,10 @@ function Dashboard() {
           {/* Enhanced Header Section */}
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 relative z-10">
             <div className="space-y-2">
-              <h1 className="text-4xl font-bold tracking-tight text-gradient-hero animate-fade-in">
+              <h1 className="text-4xl font-bold tracking-tight text-white">
                 Dashboard
               </h1>
-              <p className="text-lg text-muted-foreground">
+              <p className="text-gray-400 mt-2">
                 Welcome back! Here's an overview of your workflow.
               </p>
             </div>
@@ -380,6 +385,8 @@ function Dashboard() {
       <CreateTaskDialog open={isCreateTaskOpen} onOpenChange={setIsCreateTaskOpen} />
         </>
       )}
+        </div>
+      </div>
     </div>
   )
 }

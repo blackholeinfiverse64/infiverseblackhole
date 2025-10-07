@@ -3,12 +3,12 @@ import React from 'react'
 export function SpaceParticles({ count = 50, className = '' }) {
   const particles = Array.from({ length: count }, (_, i) => ({
     id: i,
-    size: Math.random() * 4 + 2, // Larger particles for better visibility
+    size: Math.random() * 3 + 3, // Clear, visible particles: 3-6px
     centerX: Math.random() * 100, // Center point X for orbit
     centerY: Math.random() * 100, // Center point Y for orbit
-    animationDelay: Math.random() * 20,
-    animationDuration: Math.random() * 20 + 10, // Faster for better visibility
-    orbitRadius: Math.random() * 100 + 30, // Smaller orbits for visibility
+    animationDelay: Math.random() * 10, // Reduced random delay
+    animationDuration: Math.random() * 40 + 60, // Much slower: 60-100 seconds
+    orbitRadius: Math.random() * 50 + 20, // Smaller, more stable orbits
     rotationDirection: Math.random() > 0.5 ? 1 : -1, // Clockwise or counter-clockwise
   }))
 
@@ -36,20 +36,23 @@ export function SpaceParticles({ count = 50, className = '' }) {
         
         @keyframes white-particle-glow {
           0%, 100% {
-            opacity: 0.8;
+            opacity: 0.6;
             transform: scale(1);
           }
           50% {
-            opacity: 1;
-            transform: scale(1.2);
+            opacity: 0.9;
+            transform: scale(1.1);
           }
         }
 
         .particle-revolve {
           will-change: transform;
-          animation: var(--revolve-direction) var(--duration) linear infinite, white-particle-glow 1s ease-in-out infinite;
+          animation: var(--revolve-direction) var(--duration) linear infinite, white-particle-glow 8s ease-in-out infinite;
           transform-origin: center;
           filter: none; /* Remove any blur */
+          image-rendering: crisp-edges; /* Make particles sharp */
+          -webkit-backface-visibility: hidden; /* Prevent blur on transform */
+          backface-visibility: hidden;
         }
 
         .particle-revolve-clockwise {
@@ -77,11 +80,11 @@ export function SpaceParticles({ count = 50, className = '' }) {
               '--orbit-radius': `${particle.orbitRadius}px`,
               animationDelay: `${particle.animationDelay}s`,
               boxShadow: `
-                0 0 ${particle.size}px rgba(255, 255, 255, 1),
-                0 0 ${particle.size * 2}px rgba(255, 255, 255, 0.8),
-                inset 0 0 ${particle.size}px rgba(255, 255, 255, 0.9)
+                0 0 ${particle.size * 0.3}px rgba(255, 255, 255, 1),
+                0 0 ${particle.size * 0.6}px rgba(255, 255, 255, 0.6)
               `,
-              border: '1px solid rgba(255, 255, 255, 0.9)',
+              border: '1px solid rgba(255, 255, 255, 1)',
+              backgroundColor: 'rgba(255, 255, 255, 0.95)', /* Ensure solid white core */
             }}
           />
         ))}
@@ -97,8 +100,8 @@ export function CosmicOrbs({ count = 8, className = '' }) {
     left: Math.random() * 100,
     top: Math.random() * 100,
     hue: Math.random() * 60 + 260, // Purple to pink range
-    animationDelay: Math.random() * 15,
-    pulseSpeed: Math.random() * 4 + 6,
+    animationDelay: Math.random() * 8, // Reduced random delay
+    pulseSpeed: Math.random() * 6 + 12, // Slower pulse: 12-18 seconds
   }))
 
   return (
@@ -109,29 +112,29 @@ export function CosmicOrbs({ count = 8, className = '' }) {
             transform: translate(0, 0) scale(1);
           }
           25% {
-            transform: translate(20px, -30px) scale(1.1);
+            transform: translate(15px, -20px) scale(1.02);
           }
           50% {
-            transform: translate(-15px, 20px) scale(0.9);
+            transform: translate(-10px, 15px) scale(0.98);
           }
           75% {
-            transform: translate(25px, 15px) scale(1.05);
+            transform: translate(18px, 10px) scale(1.01);
           }
         }
         
         @keyframes cosmic-pulse {
           0%, 100% {
-            opacity: 0.1;
-            filter: blur(20px);
+            opacity: 0.08;
+            filter: blur(18px);
           }
           50% {
-            opacity: 0.3;
-            filter: blur(15px);
+            opacity: 0.15;
+            filter: blur(16px);
           }
         }
 
         .cosmic-orb {
-          animation: cosmic-drift 20s ease-in-out infinite, cosmic-pulse var(--pulse-speed) ease-in-out infinite;
+          animation: cosmic-drift 80s ease-in-out infinite, cosmic-pulse var(--pulse-speed) ease-in-out infinite;
         }
       `}</style>
       
@@ -186,15 +189,15 @@ export function UniverseBackground({ className = '' }) {
             radial-gradient(2px 2px at 160px 30px, white, transparent);
           background-repeat: repeat;
           background-size: 200px 100px;
-          animation: star-twinkle 4s ease-in-out infinite;
+          animation: star-twinkle 12s ease-in-out infinite;
         }
 
         .nebula-clouds {
           background: 
-            radial-gradient(ellipse at 20% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
-            radial-gradient(ellipse at 80% 20%, rgba(255, 255, 255, 0.04) 0%, transparent 50%),
-            radial-gradient(ellipse at 40% 80%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
-          animation: nebula-flow 40s linear infinite;
+            radial-gradient(ellipse at 20% 50%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
+            radial-gradient(ellipse at 40% 80%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
+          animation: nebula-flow 120s linear infinite;
         }
       `}</style>
       
