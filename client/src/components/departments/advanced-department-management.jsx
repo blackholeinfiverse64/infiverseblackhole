@@ -378,7 +378,7 @@ export function AdvancedDepartmentManagement({ departments, onRefresh }) {
                       <TabsContent value="members" className="space-y-4 mt-4">
                         <div>
                           <Label>Select Members</Label>
-                          <div className="max-h-60 border border-slate-600 rounded-md p-2 bg-slate-700/50">
+                          <div className="border border-slate-600 rounded-md p-2 bg-slate-700/50 overflow-y-auto max-h-40">
                             {users.map(user => (
                               <div key={user._id} className="flex items-center space-x-2 p-2">
                                 <Checkbox

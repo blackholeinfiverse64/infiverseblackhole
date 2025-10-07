@@ -250,7 +250,7 @@ export function DepartmentCollaboration({ departments }) {
               <CardTitle className="text-white">Collaboration Feed</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-96">
+              <div className="overflow-y-auto max-h-64">
                 <div className="space-y-4">
                   {messages.map(message => (
                     <div key={message.id} className="p-4 bg-slate-700/30 rounded-lg">

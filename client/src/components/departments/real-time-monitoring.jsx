@@ -298,7 +298,7 @@ export function RealTimeDepartmentMonitoring({ departments }) {
     return (
       <Card className="bg-slate-800/50 border-slate-700">
         <CardContent className="p-6">
-          <div className="flex items-center justify-center h-64">
+          <div className="flex items-center justify-center py-16">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-400"></div>
           </div>
         </CardContent>
@@ -400,7 +400,7 @@ export function RealTimeDepartmentMonitoring({ departments }) {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-64">
+              <div className="overflow-y-auto max-h-48">
                 <div className="space-y-2">
                   {notifications.map(notification => (
                     <div 
