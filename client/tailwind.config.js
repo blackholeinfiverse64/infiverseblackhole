@@ -219,7 +219,33 @@ export default {
   		}
   	}
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+	require("tailwindcss-animate"),
+	function({ addUtilities }) {
+		const newUtilities = {
+			'.scrollbar-none': {
+				/* Hide scrollbar for IE, Edge and Firefox */
+				'-ms-overflow-style': 'none',
+				'scrollbar-width': 'none',
+				/* Hide scrollbar for Chrome, Safari and Opera */
+				'&::-webkit-scrollbar': {
+					'display': 'none',
+					'width': '0px',
+					'height': '0px',
+					'background': 'transparent'
+				}
+			},
+			'.scrollbar-hide': {
+				'-ms-overflow-style': 'none',
+				'scrollbar-width': 'none',
+				'&::-webkit-scrollbar': {
+					'display': 'none'
+				}
+			}
+		}
+		addUtilities(newUtilities, ['responsive', 'hover'])
+	}
+  ],
 }
 //  /** @type {import('tailwindcss').Config} */
 //  export default {

@@ -9,6 +9,78 @@ html, body, #root {
   background-color: #0a0a0f !important;
 }
 
+/* Hide Scrollbars Globally - Multiple Methods for Cross-Browser Support */
+.scrollbar-hide,
+.scrollbar-none {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+.scrollbar-hide::-webkit-scrollbar,
+.scrollbar-none::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+
+.scrollbar-hide::-webkit-scrollbar-track,
+.scrollbar-none::-webkit-scrollbar-track {
+  display: none !important;
+}
+
+.scrollbar-hide::-webkit-scrollbar-thumb,
+.scrollbar-none::-webkit-scrollbar-thumb {
+  display: none !important;
+}
+
+/* Global scrollbar hiding for all elements */
+*, *::before, *::after {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0px !important;
+  height: 0px !important;
+  background: transparent !important;
+}
+
+/* Specific targeting for overflow elements */
+div[class*="overflow-y-auto"],
+div[class*="overflow-auto"] {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+div[class*="overflow-y-auto"]::-webkit-scrollbar,
+div[class*="overflow-auto"]::-webkit-scrollbar {
+  display: none !important;
+  width: 0px !important;
+  height: 0px !important;
+}
+
+/* Global scrollbar hiding for all elements */
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+*::-webkit-scrollbar-track {
+  display: none !important;
+}
+
+*::-webkit-scrollbar-thumb {
+  display: none !important;
+}
+
 /* Enhanced Space Theme Styling */
 .text-gold {
   color: #F59E0B;
