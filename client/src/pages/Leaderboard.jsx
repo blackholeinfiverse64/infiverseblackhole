@@ -141,7 +141,7 @@ const Leaderboard = () => {
                 {leaderboard.map((user, index) => (
                   <TableRow
                     key={user._id}
-                    className="cursor-pointer hover:bg-gray-100"
+                    className="cursor-pointer hover:!bg-gradient-to-r hover:!from-blue-500/20 hover:!via-purple-500/20 hover:!to-pink-500/20 hover:border-l-4 hover:border-l-blue-500 hover:shadow-lg transition-all duration-300"
                     onClick={() => handleUserClick(user)}
                   >
                     <TableCell>{getRankBadge(index)}</TableCell>
