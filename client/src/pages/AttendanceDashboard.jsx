@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Users, 
@@ -30,6 +30,7 @@ import { Input } from '../components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { useAuth } from '../context/auth-context';
+import { useTabs } from '../hooks/use-tabs';
 import AttendanceGrid from '../components/attendance/AttendanceGrid';
 import BiometricUpload from '../components/attendance/BiometricUpload';
 import AttendanceStats from '../components/attendance/AttendanceStats';
@@ -38,7 +39,7 @@ import api from '../lib/api';
 
 const AttendanceDashboard = () => {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState('live');
+  const { activeTab, setActiveTab } = useTabs('live');
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [departmentFilter, setDepartmentFilter] = useState('all');

@@ -20,15 +20,15 @@ export function SplashScreen({ onComplete }) {
 
   if (!isVisible) {
     return (
-      <div className="fixed inset-0 z-[9999] bg-transparent transition-opacity duration-500 opacity-0 pointer-events-none">
+      <div className="fixed inset-0 z-[9999] bg-black transition-opacity duration-500 opacity-0 pointer-events-none">
       </div>
     )
   }
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-transparent flex items-center justify-center overflow-hidden">
+    <div className="fixed inset-0 z-[9999] bg-black flex items-center justify-center overflow-hidden">
       {/* Enhanced Space Background */}
-      <div className="absolute inset-0 bg-transparent"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900"></div>
       <div className="absolute inset-0 cosmic-grid opacity-15"></div>
       
       {/* Enhanced Deep Space Nebula Effects with Blue Theme */}
