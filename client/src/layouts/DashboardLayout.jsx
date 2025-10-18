@@ -73,15 +73,15 @@ export function DashboardLayout() {
           <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-indigo-500/7 rounded-full blur-3xl animate-pulse" style={{animationDuration: '14s', animationDelay: '2s'}}></div>
         </div>
 
-        {/* Revolving Blue Particle System - Like Splash Screen */}
+        {/* Revolving Blue Particle System - Slower Speed */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           {/* Medium Blue Particles */}
           {[...Array(40)].map((_, i) => {
             const size = 3 + Math.random() * 3
             const startX = Math.random() * 100
             const startY = Math.random() * 100
-            const duration = 15 + Math.random() * 20
-            const delay = Math.random() * 10
+            const duration = 30 + Math.random() * 40 // Slower: 30-70s (was 15-35s)
+            const delay = Math.random() * 15
             return (
               <div
                 key={`medium-${i}`}
@@ -105,8 +105,8 @@ export function DashboardLayout() {
             const size = 2 + Math.random() * 2
             const startX = Math.random() * 100
             const startY = Math.random() * 100
-            const duration = 10 + Math.random() * 15
-            const delay = Math.random() * 8
+            const duration = 25 + Math.random() * 35 // Slower: 25-60s (was 10-25s)
+            const delay = Math.random() * 12
             return (
               <div
                 key={`small-${i}`}
@@ -130,8 +130,8 @@ export function DashboardLayout() {
             const size = 1 + Math.random() * 1.5
             const startX = Math.random() * 100
             const startY = Math.random() * 100
-            const duration = 8 + Math.random() * 12
-            const delay = Math.random() * 6
+            const duration = 20 + Math.random() * 30 // Slower: 20-50s (was 8-20s)
+            const delay = Math.random() * 10
             return (
               <div
                 key={`tiny-${i}`}
