@@ -65,12 +65,11 @@ export function DashboardLayout() {
         <UniverseBackground />
         <SpaceParticles count={60} />
         
-        {/* Content Area with proper padding for header and sidebar */}
-        <div className={`min-h-screen w-full pt-18 transition-all duration-200 overflow-auto space-scrollbar relative z-10 ${
-          sidebarOpen ? 'md:pl-80' : 'md:pl-0'
-        }`}>
+        {/* Content Area - Always Centered, No Shift */}
+        <div className="min-h-screen w-full pt-18 overflow-auto space-scrollbar relative z-10">
           <div className="p-4 md:p-6 lg:p-8">
-            <div className="max-w-full mx-auto animate-fade-in">
+            {/* Max width container keeps content centered */}
+            <div className="max-w-7xl mx-auto animate-fade-in">
               <Outlet />
               <EnhancedStartDayDialog
                 isOpen={showStartDayDialog}
@@ -107,9 +106,8 @@ export function DashboardLayout() {
       </div>
 
       {/* LAYER 3: Overlay - DashboardHeader (Fixed Position) */}
-      <div className={`fixed top-0 right-0 left-0 z-40 h-18 will-change-auto transition-all duration-200 ${
-        sidebarOpen ? 'md:left-80' : 'md:left-0'
-      }`}>
+      {/* Header spans full width, sidebar slides over it */}
+      <div className="fixed top-0 right-0 left-0 z-40 h-18 will-change-auto">
         <DashboardHeader sidebarOpen={sidebarOpen} onSidebarToggle={toggleSidebar} />
       </div>
     </div>
