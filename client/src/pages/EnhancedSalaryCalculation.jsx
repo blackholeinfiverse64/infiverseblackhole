@@ -36,13 +36,14 @@ import { Badge } from '../components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Input } from '../components/ui/input';
+import { useTabs } from '../hooks/use-tabs';
 import { useAuth } from '../context/auth-context';
 import api from '../lib/api';
 import { toast } from 'react-hot-toast';
 
 const EnhancedSalaryCalculation = () => {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState('overview');
+  const { activeTab, setActiveTab } = useTabs('overview');
   const [salaryData, setSalaryData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [calculating, setCalculating] = useState(false);

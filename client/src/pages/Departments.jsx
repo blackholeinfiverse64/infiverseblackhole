@@ -22,10 +22,11 @@ import {
 } from "lucide-react";
 import { api } from "../lib/api";
 import { useToast } from "../hooks/use-toast";
+import { useTabs } from "../hooks/use-tabs";
 
 function Departments() {
   const [selectedDepartment, setSelectedDepartment] = useState(null);
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const { activeTab, setActiveTab } = useTabs('dashboard');
   const [departments, setDepartments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();

@@ -25,6 +25,7 @@ import {
   Brain,
   Zap
 } from 'lucide-react';
+import { useTabs } from '@/hooks/use-tabs';
 import { useAuth } from '@/context/auth-context';
 import axios from 'axios';
 import { API_URL } from '@/lib/api';
@@ -47,7 +48,7 @@ export function EmployeeMonitoring() {
   const { user } = useAuth();
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [monitoringStatus, setMonitoringStatus] = useState({});
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const { activeTab, setActiveTab } = useTabs('dashboard');
   const [loading, setLoading] = useState(false);
   const [employees, setEmployees] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');

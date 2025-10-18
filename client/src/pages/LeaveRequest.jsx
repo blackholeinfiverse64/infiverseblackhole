@@ -20,6 +20,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
+import { useTabs } from '../hooks/use-tabs';
 import { useAuth } from '../context/auth-context';
 import { useLeave } from '../hooks/use-leave';
 import LeaveForm from '../components/leave/LeaveForm';
@@ -29,7 +30,7 @@ import LeaveStats from '../components/leave/LeaveStats';
 
 const LeaveRequest = () => {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState('request');
+  const { activeTab, setActiveTab } = useTabs('request');
   const [showLeaveForm, setShowLeaveForm] = useState(false);
   const [selectedLeave, setSelectedLeave] = useState(null);
 

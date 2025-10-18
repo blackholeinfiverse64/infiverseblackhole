@@ -37,12 +37,13 @@ import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
+import { useTabs } from '../hooks/use-tabs';
 import { useAuth } from '../context/auth-context';
 import api from '../lib/api';
 
 const ModernSalaryDashboard = () => {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState('overview');
+  const { activeTab, setActiveTab } = useTabs('overview');
   const [salaryData, setSalaryData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);

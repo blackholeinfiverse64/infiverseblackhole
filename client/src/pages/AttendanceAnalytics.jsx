@@ -22,6 +22,7 @@ import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Progress } from '../components/ui/progress';
+import { useTabs } from '../hooks/use-tabs';
 import { useAttendanceAnalytics } from '../hooks/use-attendance';
 import { useAuth } from '../context/auth-context';
 import { toast } from '../hooks/use-toast';
@@ -37,7 +38,7 @@ const AttendanceAnalytics = () => {
     endDate: new Date().toISOString().split('T')[0]
   });
   const [selectedDepartment, setSelectedDepartment] = useState('');
-  const [activeTab, setActiveTab] = useState('overview');
+  const { activeTab, setActiveTab } = useTabs('overview');
   const [showUpload, setShowUpload] = useState(false);
 
   const { 

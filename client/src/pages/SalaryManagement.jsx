@@ -22,6 +22,7 @@ import { Badge } from '../components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { useSalaryManagement } from '../hooks/use-salary';
+import { useTabs } from '../hooks/use-tabs';
 import { useAuth } from '../context/auth-context';
 import api from '../lib/api';
 import SalaryCard from '../components/salary/SalaryCard';
@@ -31,7 +32,7 @@ import WorkingDaysConfig from '../components/salary/WorkingDaysConfig';
 
 const SalaryManagement = () => {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState('overview');
+  const { activeTab, setActiveTab } = useTabs('overview');
   const [showSalaryForm, setShowSalaryForm] = useState(false);
   const [showWorkingDaysConfig, setShowWorkingDaysConfig] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);

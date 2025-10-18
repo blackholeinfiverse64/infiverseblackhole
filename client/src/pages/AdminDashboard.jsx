@@ -23,6 +23,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
+import { useTabs } from "../hooks/use-tabs"
 import { useToast } from "../hooks/use-toast"
 import { API_URL } from "@/lib/api"
 
@@ -57,7 +58,7 @@ const AdminDashboard = () => {
   const [departments, setDepartments] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
-  const [activeTab, setActiveTab] = useState("departments")
+  const { activeTab, setActiveTab } = useTabs("departments")
 
   // Department form state
   const [newDepartment, setNewDepartment] = useState({
